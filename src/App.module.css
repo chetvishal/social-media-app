@@ -1,0 +1,38 @@
+.App__body {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  padding: 0 8.75rem;
+}
+
+.App__sidebar {
+  padding: 1rem;
+  min-width: 20%;
+}
+
+.App__content {
+  padding: 1rem;
+  min-width: 70%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* flex-basis: 100%; */
+}
+
+.App__content > *:first-child  {
+  /* background-color: black; */
+  flex: 1;
+}
+
+@media only screen and (max-width: 992px) {
+  .App__sidebar {
+    display: none;
+  }
+  .App__body {
+    padding: 0 0rem;
+  }
+
+  .App__content {
+    padding: 0rem;
+  }
+}

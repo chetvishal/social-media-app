@@ -1,0 +1,77 @@
+/* @import url('./colors.css'); */
+
+.util-heading {
+    display: block;
+}
+
+.util-heading-large {
+    font-size: 4rem;
+    display: block;
+}
+
+.util-heading-medium {
+    font-size: 1.35rem;
+    font-weight: 400;
+    display: block;
+}
+
+.util-heading-small {
+    display: block;
+    font-size: 1.2rem;
+    /* font-weight:lighter; */
+}
+
+.util-small-text {
+    font-size: 0.8rem;
+}
+
+.util-gray-text {
+    color: gray;
+}
+
+.util-center-text {
+    margin: 0 auto;
+    display: block;
+    text-align: center;
+}
+
+/* TEXT COLORS */
+
+.txt-primary {
+    color: var(--primary);
+    /* background-color: gray; */
+}
+
+.txt-primary-light {
+    color: var(--primary-light);
+}
+
+.txt-success {
+    color: var(--success);
+}
+
+.txt-success-light {
+    color: var(--success-light);
+}
+
+.txt-warning {
+    color: var(--warning);
+}
+
+.txt-warning-light {
+    color: var(--warning-light);
+}
+
+.txt-danger {
+    color: var(--danger);
+}
+
+.txt-danger-light {
+    color: var(--danger-light);
+}
+
+.nostyle {
+    text-decoration: none;
+    color: inherit;
+}
+

@@ -1,0 +1,172 @@
+.navbar {
+  background-color: white;
+  position: sticky;
+  top: 0px;
+  z-index: 23;
+  width: 100%;
+  border-bottom: 1px solid rgb(247, 247, 247);
+}
+
+#toggleMenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.toggleMenu__haburgerIcon {
+  position: absolute;
+  left: 1rem;
+  top: 35%;
+  cursor: pointer;
+}
+
+#toggleMenu__toggle {
+  display: none;
+}
+
+#toggleMenu__toggle:checked ~ .navbar__menu {
+  display: flex;
+  flex-direction: column;
+  transform: translateX(0);
+}
+
+.toggleMenu__toggleLabel {
+  display: flex;
+  position: relative;
+  /* padding: 1rem; */
+  padding: 1rem 1rem 0.5rem;
+  justify-content: center;
+  height: 40px;
+  align-items: center;
+}
+
+.navbar__menu {
+  /* display: none; */
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  margin: 0px;
+  padding: 1.3rem;
+  min-width: 15rem;
+  min-height: 100%;
+  position: fixed;
+  top: 4.5rem;
+  z-index: 10;
+  box-shadow: rgb(0 0 0 / 16%) 0px 12px 12px;
+
+  transform: translateX(-281.6px);
+  transition-property: translateX 1s;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-in;
+}
+
+.navbar__menu li {
+  list-style: none;
+  text-align: left;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  font-size: 0.8rem;
+}
+
+.navbar__menu a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.navbar__logo {
+  display: flex;
+  align-items: center;
+}
+
+.navbar__logoText {
+  margin-right: -7px;
+  color: #5b4dd4;
+  /* color: #3dc3f5; */
+  font-size: 1.6rem;
+  font-weight: bold;
+  letter-spacing: -1px;
+}
+
+.navbar__logoIcon {
+  fill: #3dc3f5;
+}
+
+.divToggle {
+  /* background-color: gray; */
+  background-color: gray;
+  position: absolute;
+  width: 473px;
+  height: 100%;
+  right: -473px;
+  top: 0;
+}
+
+/* Navbar list  */
+.toggleMenu__linksList {
+  display: none;
+  list-style: none;
+}
+
+.toggleMenu__item {
+  padding: 0 1.25rem;
+  /* color: rgb(69, 71, 71); */
+  /* color: rgb(83, 85, 86); */
+  color: rgb(83 85 86 / 83%);
+  /* color: rgb(0, 20, 30); */
+  font-weight: 400;
+
+  letter-spacing: 1.2px;
+  font-size: 0.81rem;
+  /* line-height: 1.3rem; */
+}
+
+.toggleMenu__links {
+  display: none;
+  position: absolute;
+  left: 1rem;
+  padding-left: 1.25rem;
+}
+
+/* Search box */
+.toggleMenu__searchBox {
+  display: none;
+  position: absolute;
+  right: 1rem;
+  padding-right: 2.5rem;
+}
+
+.toggleMenu__inputBox {
+  max-width: 240px;
+  border-color: rgba(83, 85, 86, 0.25);
+  border-radius: 17px;
+  border-style: solid;
+  border-width: 1px;
+  box-shadow: transparent 0px 0px 0px 0px inset;
+  color: rgb(0, 20, 30);
+  font-size: 12px;
+  max-height: 28px;
+  margin: 0px;
+  outline: none;
+  padding: 8px 32px 8px 12px;
+  width: auto;
+  line-height: 14.5714px;
+  justify-content: center;
+
+
+ 
+
+}
+
+@media only screen and (min-width: 992px) {
+  .toggleMenu__IconContainer {
+    display: none;
+  }
+  .toggleMenu__linksList {
+    display: flex;
+  }
+  .toggleMenu__links {
+    display: flex;
+  }
+  .toggleMenu__searchBox {
+    display: flex;
+  }
+}

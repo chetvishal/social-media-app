@@ -1,0 +1,57 @@
+/* @import url('./colors.css'); */
+
+.btn {
+  border: 0.2px solid transparent;
+  padding: 3px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  /* color: white; */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  margin: 0.5rem 0.1rem;
+}
+
+.btn:hover {
+  cursor: pointer;
+}
+
+.btn-link {
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-icon {
+  display: inline-block;
+}
+
+.btn-float {
+  border-radius: 50%;
+  padding: 0.5rem;
+  border: 0.5px solid transparent;
+  height: 3rem;
+  width: 3rem;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.btn-float:hover {
+  cursor: pointer;
+}
+
+.submit-button {
+  font-size: 1rem;
+  padding: 0.5rem 1.5rem;
+  /* margin-inline: auto; */
+  /* background-color: #fb641b; */
+  /* margin-top: 2rem; */
+  /* display: block; */
+  border: none;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  background-image: linear-gradient(
+    90deg,
+    hsla(197, 100%, 63%, 1) 0%,
+    hsla(294, 100%, 55%, 1) 100%
+  );
+}

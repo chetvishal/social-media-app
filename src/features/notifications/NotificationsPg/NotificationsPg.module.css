@@ -1,0 +1,8 @@
+.notificationsPg__heading {
+  display: flex;
+  padding: 0 22px;
+}
+
+@media only screen and (max-width: 992px) {
+ 
+}

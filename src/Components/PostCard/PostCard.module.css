@@ -1,0 +1,38 @@
+.postCard {
+  display: flex;
+  /* border: 1px solid black; */
+  padding: 0 0.75rem;
+  width: 100%;
+}
+
+.postCard__imageContainer {
+  /* border: 1px solid black; */
+  /* width: 10%; */
+  padding: 10px 10px;
+}
+
+.postCard__content {
+  /* border: 1px solid black; */
+  padding: 10px 10px 2rem;
+  width: 80%;
+}
+
+.postCard__image {
+  height: 3rem;
+  width: 3rem;
+  border-radius: 50%;
+}
+
+.postCard__content {
+    text-align: left;
+}
+
+.postCard__contentText {
+    text-align: left;
+}
+
+.postCard__actionBar {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
