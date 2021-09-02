@@ -1,46 +1,35 @@
 import { ProfileCard } from '../ProfileCard/ProfileCard'
 import styles from './Following.module.css'
 import { Link, Chat, Retweet, Location } from '../../../Assets/Svg/index';
-import { useNavigate } from 'react-router';
-
-const FollowingCard = ({ text }) => {
-    const navigate = useNavigate()
-    return (
-        <div className={styles.followingCard}>
-            <div className={styles.followingCard__imageContainer}>
-                <img
-                    src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
-                    className={styles.followingCard__image}
-                />
-            </div>
-            <div className={styles.followingCard__content} style={{ border: "1px solid black;" }}>
-                <div className={styles.followingCard__contentHeading}>
-                    <span style={{ fontSize: "1rem", fontWeight: "500" }}>Anonymous </span>
-                    <span style={{ fontSize: "1rem", fontWeight: "300" }}>@Anonymous</span>
-                </div>
-                <div>
-                    <button
-                        onClick={() => navigate('/profile/edit')}
-                        className={`submit-button ${styles.followingCard__Btn}`}>Following
-                    </button>
-                </div>
-            </div>
-        </div>
-    )
-}
+import { useNavigate, useParams } from 'react-router';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+import { getUserData } from '../profileSlice';
+import { FollowerCard } from '../Followers/Followers';
 
 export const Following = () => {
-    return (
+
+    const { userProfile, status } = useSelector(state => state.profile)
+    const { username } = useParams()
+    const dispatch = useDispatch()
+    useEffect(() => {
+        (
+            async () => {
+                if (status === "idle" || userProfile.username !== username && status !== "error") {
+                    console.log('useEffect if ran');
+                    await dispatch(getUserData({ username }));
+                }
+            }
+        )()
+    })
+
+    return status === "fulfilled" &&
         <div>
-
-            <FollowingCard text="hello world" />
-
-            <FollowingCard text="hello world" />
-
-
-            <FollowingCard text="hello world" />
-
-            <FollowingCard text="hello world" />
+            {
+                userProfile.following.map(user => {
+                    return <FollowerCard name={user.name} username={user.username} />
+                })
+            }
         </div>
-    )
+
 }

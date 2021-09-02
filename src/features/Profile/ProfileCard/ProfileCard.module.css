@@ -30,6 +30,7 @@
 
 .profile__contentText {
   text-align: left;
+  padding: 0.8rem 0 0;
 }
 
 .profile__actionBar {
@@ -47,9 +48,7 @@
 .profile__actionItem {
   display: flex;
   align-items: center;
-}
-.profile__Btn {
-  border-radius: 100px;
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 992px) {

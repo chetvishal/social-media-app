@@ -1,7 +1,10 @@
-export { Home } from './posts/Home/Home';
+export { Home } from './Feed/Home/Home';
 export { Notifications } from './notifications/NotificationsPg/NotificationsPg';
 export { ProfilePg } from './Profile/ProfilePg/ProfilePg';
 export { EditProfile } from './Profile/EditProfile/EditProfile';
 export { Followers } from './Profile/Followers/Followers'
 export { Following } from './Profile/Following/Following';
-export { PostPg } from './posts/PostPg/PostPg'
+export { PostPg } from './posts/PostPg/PostPg';
+export { Login } from './Auth/Login/Login';
+export { SearchPg } from './Search/SearchPg/SearchPg'
+export { Signup } from './Auth/Signup/Signup'

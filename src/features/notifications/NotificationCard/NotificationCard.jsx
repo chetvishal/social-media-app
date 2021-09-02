@@ -1,7 +1,24 @@
 import styles from './NotificationCard.module.css';
-import { Heart, HeartFilled, Chat, Retweet, BookMark } from '../../../Assets/Svg/index';
+import { Link, useNavigate } from 'react-router-dom';
 
-export const NotificationCard = ({ text }) => {
+export const NotificationCard = ({ type, name, username, postId }) => {
+
+    const navigate = useNavigate()
+
+    const notificationContent = (type) => {
+        switch (type) {
+            case "Follow":
+                return <span onClick={() => navigate(`/profile/${username}`)}>{name} started following you</span>
+            case "Comment":
+                return <span onClick={() => navigate(`/post/${postId}`)}>{name} commented on your post</span>
+            case "Post":
+                return <span onClick={() => navigate(`/post/${postId}`)}>In case you missed {name}'s post </span>
+            case "Like":
+                return <span onClick={() => navigate(`/post/${postId}`)}>{name} Liked your post</span>
+            default:
+                return <span>Notification from {name}</span>
+        }
+    }
 
     return (
         <div className={styles.notificationCard}>
@@ -12,14 +29,15 @@ export const NotificationCard = ({ text }) => {
                 />
             </div>
             <div className={styles.notificationCard__content} style={{ border: "1px solid black;" }}>
-                <div className={styles.notificationCard__contentHeading}>
-                    <span style={{ fontSize: "1rem", fontWeight: "500" }}>Anonymous </span>
-                    <span style={{ fontSize: "1rem", fontWeight: "300" }}>@Anonymous</span>
+                <div className={styles.notificationCard__contentHeading} onClick={() => navigate(`/profile/${username}`)}>
+                    <span style={{ fontSize: "1rem", fontWeight: "500" }} className={styles.NotificationCard__userName}>{name} </span>
+                    <span style={{ fontSize: "1rem", fontWeight: "300" }}>@{username}</span>
                 </div>
                 <div className={styles.notificationCard__contentText}>
                     <span>
-                        {/* Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero voluptates dolores facilis in reiciendis iste aperiam ex excepturi, blanditiis, deserunt pariatur ab fuga illo velit porro modi nemo quibusdam harum facere totam. Rerum doloremque ipsam quibusdam, beatae enim eum iste molestias non ad reprehenderit vero adipisci officia velit asperiores! Fuga at odio eos officia, eum neque. */}
-                        {text}
+                        {
+                            notificationContent(type)
+                        }
                     </span>
                 </div>
             </div>

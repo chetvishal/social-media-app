@@ -1,25 +1,24 @@
 import styles from './NewPost.module.css';
-import { useRef, useState } from "react";
-import { Heart, HeartFilled, Chat, Retweet, BookMark } from '../../Assets/Svg';
+import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost } from '../../features/posts/postSlice';
+import { createNewPost } from '../../features/Feed/feedSlice';
 
 export const NewPost = () => {
     const newPostTextBox = useRef(null);
-    const [newPostContent, setNewPostContent] = useState("")
+    const { userId, username } = useSelector(state => state.auth)
     const dispatch = useDispatch();
     const keyPressHandler = (e) => {
         if (e.key === 'Enter') {
-            dispatch(createPost({
-                postID: `p${Math.floor(Math.random() * 500)}`,
-                content: newPostTextBox.current.value,
-                likes: Math.floor(Math.random() * 50),
-                user: {
-                    userID: "u1234",
-                    name: "tanay"
-                }
-            }))
+            newPostHandler()
         }
+    }
+
+    const newPostHandler = (e) => {
+        dispatch(createNewPost({
+            userId,
+            username,
+            content: newPostTextBox.current.value
+        }))
     }
 
     return (
@@ -34,9 +33,8 @@ export const NewPost = () => {
                 <div style={{ paddingTop: "0.8rem" }}>
                     <textarea
                         placeholder="Whats happening?"
-                        className={styles.newPost__input}
+                        className={styles.newPost__textarea}
                         rows="3"
-                        onBlur={(e) => setNewPostContent(e.target.value)}
                         onKeyPress={keyPressHandler}
                         maxLength="150"
                         ref={newPostTextBox}
@@ -52,20 +50,8 @@ export const NewPost = () => {
                     padding: "1rem 0"
                 }}>
                     <button
-                        onClick={() => {
-                            // console.log("newPostContent", newPostContent)
-                            // console.log("value of text box: ", newPostTextBox.current.value)
-                            dispatch(createPost({
-                                postID: `p${Math.floor(Math.random() * 500)}`,
-                                content: newPostTextBox.current.value,
-                                likes: Math.floor(Math.random() * 50),
-                                user: {
-                                    userID: "u1234",
-                                    name: "tanay"
-                                }
-                            }))
-                        }}
-                        className={`submit-button ${styles.newPost__Btn}`}>POST</button>
+                        onClick={newPostHandler}
+                        className={`submit-button`}>POST</button>
                 </div>
             </div>
         </div>

@@ -1,0 +1,32 @@
+.search {
+  padding: 1rem;
+}
+
+.searchInput {
+    display: block;
+    margin: 0.5rem 0;
+    border-width: 0 0 1px;
+    border-bottom-color: rgb(222, 222, 222);
+    width: 15rem;
+  }
+  
+  .searchInput:focus {
+    outline: none;
+    border-bottom-color: black;
+  }
+
+  .searchInputText {
+    color: var(--grey-variant);
+  }
+
+  .search__Input {
+    display:flex;
+  }
+
+  .search__Btn {
+    margin-top: 0.2rem;
+  }
+
+  .searchResult {
+    margin-top: 1rem;
+  }

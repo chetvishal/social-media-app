@@ -1,35 +1,79 @@
 import { PostCard } from '../../../Components/index';
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router';
 import styles from './PostPg.module.css'
-import { useRef, useState } from "react";
-// import { Heart, HeartFilled, Chat, Retweet, BookMark } from '../../Assets/Svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { useRef, useEffect } from "react";
+import { getPost } from '../postSlice';
+import { checkLikedPost } from '../../../Services/PostServices';
+import { commentHandler } from '../postSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const PostPg = () => {
-    const { posts } = useSelector((state) => {
-        console.log("state.posts: ", state.posts);
+    const { currentPost, status } = useSelector((state) => {
         return state.posts;
     });
-    const { id } = useParams()
-    const findItem = posts.find(i => i.postID === id)
+    const { userId } = useSelector((state) => {
+        return state.auth
+    })
+    const dispatch = useDispatch()
+    const { postId } = useParams()
     const postTextBox = useRef(null);
     const navigate = useNavigate()
-    return (
-        <div>
-            <PostCard content={findItem.content} name={findItem.user.name} userId={findItem.user.userID} postId={findItem.postID} />
-            <div className={styles.post}>
-                <div className={styles.post__imageContainer}>
+
+    const commentBtnHandler = async () => {
+        console.log("commment button")
+        dispatch(commentHandler({ userId, postId, content: postTextBox.current.value }))
+    }
+
+    useEffect(() => {
+        // fetch post data
+        (async () => {
+
+            console.log("status in postPage useEffect: ", status, currentPost, postId)
+            if (currentPost._id !== postId || status === "idle") {
+                console.log('useEffect if ran');
+                await dispatch(getPost(postId));
+            }
+        })();
+    }, []);
+
+    // console.log("currentPost: ", currentPost)
+    // let postData = status === "fulfilled_getPost" ? currentPost : {
+    //     content: "",
+    //     userId: {
+    //         name: "",
+    //         username: ""
+    //     },
+    //     _id: ""
+    // }
+    let postData = currentPost;
+
+    console.log("status in postPage before rendering page: ", status, "postDAta", postData)
+    return status === "loading" || status === "idle" ?
+        <div>loading...
+            <button onClick={() => console.log("currentPost", currentPost, "postData: ", postData, "status: ", status)}>click me</button>
+        </div>
+        :
+        <div className={styles.post}>
+            <PostCard content={postData?.content}
+                name={postData?.userId?.name}
+                username={postData?.userId?.username}
+                postId={postData?._id}
+                likes={checkLikedPost(postData?.likes, userId)}
+                likesArr={postData?.likes}
+            />
+            <div className={styles.post__newComment}>
+                <div className={styles.post__newComment__imageContainer}>
                     <img
                         src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
-                        className={styles.post__image}
+                        className={styles.post__newComment__image}
                     />
                 </div>
-                <div className={styles.post__content} style={{ border: "1px solid black;" }}>
+                <div className={styles.post__newComment__content} style={{ border: "1px solid black;" }}>
                     <div style={{ paddingTop: "0.8rem" }}>
                         <textarea
-                            placeholder="Comment..."
-                            className={styles.post__input}
+                            placeholder="Add a comment"
+                            className={styles.post__newComment__textarea}
                             rows="3"
                             maxLength="150"
                             ref={postTextBox}
@@ -42,39 +86,43 @@ export const PostPg = () => {
                     <div style={{
                         display: "flex",
                         justifyContent: "flex-end",
-                        padding: "1rem 0"
+                        padding: "0.5rem 0"
                     }}>
                         <button
-
-                            className={`submit-button ${styles.post__Btn}`}>COMMENT</button>
+                            onClick={commentBtnHandler}
+                            className={`submit-button`}>COMMENT</button>
                     </div>
                 </div>
             </div>
 
-
+            <div style={{ display: postData.comments.length !== 0 ? "flex" : "none", padding: "6px 22px" }}>
+                    <h2>Comments</h2>
+                </div>
             {/* PostCard */}
-            <div className={styles.post__comment}>
-                <div className={styles.post__comment__imageContainer}>
-                    <img
-                        src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
-                        className={styles.post__comment__image}
-                    />
-                </div>
-                <div className={styles.post__comment__content} style={{ border: "1px solid black;" }}>
-                    <div className={styles.post__comment__contentHeading}>
-                        <span style={{ fontSize: "1rem", fontWeight: "500" }}>Tanay </span>
-                        <span style={{ fontSize: "1rem", fontWeight: "300" }}>@Tanay</span>
+            {
+                postData.comments.map(item => {
+                    return <div className={styles.post__comment}>
+                        <div className={styles.post__comment__imageContainer}>
+                            <img
+                                src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
+                                className={styles.post__comment__image}
+                            />
+                        </div>
+                        <div className={styles.post__comment__content} style={{ border: "1px solid black;" }}>
+                            <div className={styles.post__comment__contentHeading}>
+                                <span style={{ fontSize: "1rem", fontWeight: "500" }}>{item.commentUserId.name} </span>
+                                <span style={{ fontSize: "1rem", fontWeight: "300" }}>@{item.commentUserId.username}</span>
+                            </div>
+                            <div className={styles.post__comment__contentText}>
+                                <span>
+                                    {item.commentText}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                    <div className={styles.post__comment__contentText}>
-                        <span>
-                            nice work
-                            {/* Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero voluptates dolores facilis in reiciendis iste aperiam ex excepturi, blanditiis, deserunt pariatur ab fuga illo velit porro modi nemo quibusdam harum facere totam. Rerum doloremque ipsam quibusdam, beatae enim eum iste molestias non ad reprehenderit vero adipisci officia velit asperiores! Fuga at odio eos officia, eum neque. */}
-                        </span>
-                    </div>
-
-
-                </div>
-            </div>
+                })
+            }
         </div>
-    )
+
+
 }

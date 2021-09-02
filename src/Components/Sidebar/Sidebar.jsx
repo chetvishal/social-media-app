@@ -1,8 +1,11 @@
 import styles from './Sidebar.module.css';
 import { Home2 as HomeIcon, Bell, User, User2, MagnifyingGlass } from '../../Assets/Svg/index';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export const Sidebar = () => {
+
+    const { userId, username } = useSelector(state => state.auth)
 
     return (
         <div className={styles.home__sidebar}>
@@ -17,13 +20,14 @@ export const Sidebar = () => {
                         <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Home</span>
                     </div>
                 </Link>
-                <div className={styles.home__sidebarItem}>
-                    <MagnifyingGlass
-                        className={styles.home__sidebarIcon}
-                    />
-                    <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Search</span>
-                </div>
-
+                <Link className="nostyle" to="/search">
+                    <div className={styles.home__sidebarItem}>
+                        <MagnifyingGlass
+                            className={styles.home__sidebarIcon}
+                        />
+                        <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Search</span>
+                    </div>
+                </Link>
                 <Link className="nostyle" to="/notifications">
                     <div className={styles.home__sidebarItem}>
                         <Bell
@@ -33,7 +37,7 @@ export const Sidebar = () => {
 
                     </div>
                 </Link>
-                <Link className="nostyle" to="/profile">
+                <Link className="nostyle" to={`/profile/${username}`}>
                     <div className={styles.home__sidebarItem}>
                         <User
                             className={styles.home__sidebarIcon}

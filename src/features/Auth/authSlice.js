@@ -1,0 +1,123 @@
+import axios from "axios";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { loginService, signupUser, unfollowUserById } from "../../Services/Auth";
+// import { getUser } from "../../services/profile";
+// import { followUserById } from "../../services/auth";
+import { apiEndPoint } from "../../Services/Api";
+
+export const loginUserWithCredentials = createAsyncThunk(
+    "auth/loginUserWithCredentials",
+    async ({ username, password }) => {
+        console.log("i ran")
+        try {
+
+            const login = await loginService(username, password)
+            console.log("login erroor", login)
+
+            if (login.data.success) {
+
+                const { accessToken, userId, username: user_name, name } = login.data
+                console.log("login result", accessToken, userId, user_name, name)
+                return { accessToken, userId, user_name, name }
+            }
+            throw new Error(login.data.message);
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+);
+
+export const initializeUser = createAsyncThunk(
+    "auth/initializeUser",
+    async ({ username }) => {
+        try {
+            const response = await axios.get(`${apiEndPoint()}/user/${username}`)
+            return { userData: response.data.user, posts: response.data.posts }
+        } catch (error) {
+            console.log("error from getUser: ", error.response)
+            throw new Error(error.response.data.message)
+            // return error.response.data
+        }
+    }
+);
+
+export const authSlice = createSlice({
+    name: "auth",
+    initialState: {
+        status: JSON.parse(localStorage?.getItem("userData"))?.userToken
+            ? "fulfilled"
+            : "idle",
+        userToken: JSON.parse(localStorage?.getItem("userData"))?.userToken || null,
+        userId: JSON.parse(localStorage?.getItem("userData"))?.userId || null,
+        username: JSON.parse(localStorage?.getItem("userData"))?.username || null,
+        isLoggedIn: JSON.parse(localStorage?.getItem("userData"))?.isLoggedIn || null,
+        user: {},
+        error: null,
+    },
+    reducers: {
+        logoutUser: () => {
+            localStorage.removeItem("userData");
+            return {
+                status: "idle",
+                userToken: null,
+                userId: null,
+                username: null,
+                isLoggedIn: false,
+                user: null,
+            };
+        },
+        resetAuthStatus: (state) => {
+            state.status = "idle";
+            state.error = null;
+        },
+        followUser_auth: (state, action) => {
+            console.log("action followUser: ", action, state.user.following)
+            state.user.following.push(action.payload)
+        },
+        unfollowUser_auth: (state, action) => {
+            console.log("action unfollowUser: ", action, "array: ", state.user)
+            state.user.following = state.user.following.filter(item => item._id !== action.payload._id)
+        },
+    },
+    extraReducers: {
+        [loginUserWithCredentials.pending]: (state) => {
+            state.status = "loading";
+        },
+        [loginUserWithCredentials.fulfilled]: (state, action) => {
+            console.log("after fulfilled", action.payload)
+            const { accessToken, userId, user_name, name } = action.payload;
+            state.userToken = accessToken;
+            state.userId = userId;
+            state.isLoggedIn = true;
+            state.username = user_name;
+
+            localStorage.setItem("userData", JSON.stringify({
+                isLoggedIn: true,
+                userToken: accessToken,
+                userId,
+                username: user_name
+            }))
+            state.status = "fulfilled";
+        },
+        [loginUserWithCredentials.rejected]: (state, action) => {
+            console.log("error here", action.error.message);
+            state.status = "error";
+            state.isLoggedIn = false;
+            state.error = action.error.message;
+        },
+        [initializeUser.pending]: (state) => {
+            state.status = "loading";
+        },
+        [initializeUser.fulfilled]: (state, action) => {
+            state.user = action.payload.userData
+            state.status = "fulfilled";
+        },
+        [initializeUser.rejected]: (state, action) => {
+            console.log("error here", action.error.message);
+            state.status = "error";
+            state.error = action.error.message;
+        },
+    },
+});
+export const { followUser_auth, unfollowUser_auth } = authSlice.actions;
+export default authSlice.reducer;

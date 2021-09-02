@@ -2,7 +2,7 @@
   display: flex;
   /* border: 1px solid black; */
   padding: 0 0.75rem;
-  width: 100%;
+  /* width: 100%; */
 }
 
 .postCard__imageContainer {
@@ -17,6 +17,15 @@
   width: 80%;
 }
 
+.postCard__contentHeading {
+  cursor: pointer;
+}
+
+.postCard__name:hover {
+  text-decoration: underline;
+
+}
+
 .postCard__image {
   height: 3rem;
   width: 3rem;
@@ -29,10 +38,20 @@
 
 .postCard__contentText {
     text-align: left;
+    cursor: pointer;
 }
 
 .postCard__actionBar {
     display: flex;
-    justify-content: space-between;
+    justify-content: left;
     margin-top: 2rem;
+    align-items: baseline;
+}
+
+.postCard__actionItem {
+  margin-right: 1.5rem;
+}
+
+.postCard__likePost {
+  display: flex;
 }

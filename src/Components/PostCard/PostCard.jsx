@@ -1,10 +1,35 @@
 import styles from './PostCard.module.css';
-import { Heart, HeartFilled, Chat, Retweet, BookMark } from '../../Assets/Svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { Heart, HeartFilled, Chat } from '../../Assets/Svg';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { likeHandler, addLike__Post, removeLike__Post } from '../../features/posts/postSlice';
+import { addLike__Feed, removeLike__Feed } from '../../features/Feed/feedSlice';
+import { addLike__Profile, removeLike__Profile } from '../../features/Profile/profileSlice';
+import { checkLikedPost } from '../../Services/PostServices';
 
-export const PostCard = ({ content, name, userId, postId}) => {
+
+export const PostCard = ({ content, name, username, postId, likes, likesQty, likesArr }) => {
 
     const navigate = useNavigate();
+    const { userId } = useSelector((state) => {
+        return state.auth
+    })
+    const dispatch = useDispatch()
+
+    const likeButtonHandler = async () => {
+        if (checkLikedPost(likesArr, userId)) {
+            dispatch(likeHandler({ postId, userId: userId, like: false }))
+            dispatch(removeLike__Post({ userId }))
+            dispatch(removeLike__Feed({ userId, postId }))
+            dispatch(removeLike__Profile({ userId, postId }))
+        }
+        else {
+            dispatch(likeHandler({ postId, userId: userId, like: true }))
+            dispatch(addLike__Post({ userId }))
+            dispatch(addLike__Feed({ userId, postId }))
+            dispatch(addLike__Profile({ userId, postId }))
+        }
+    }
 
     return (
         <div className={styles.postCard}>
@@ -15,35 +40,31 @@ export const PostCard = ({ content, name, userId, postId}) => {
                 />
             </div>
             <div className={styles.postCard__content} style={{ border: "1px solid black;" }}>
-                <div className={styles.postCard__contentHeading}>
-                    <span style={{ fontSize: "1rem", fontWeight: "500" }}>{name} </span>
-                    <span style={{ fontSize: "1rem", fontWeight: "300" }}>@{userId}</span>
+                <div className={styles.postCard__contentHeading} onClick={() => navigate(`/profile/${username}`)}>
+                    <span style={{ fontSize: "1rem", fontWeight: "500" }} className={styles.postCard__name}>{name} </span>
+                    <span style={{ fontSize: "1rem", fontWeight: "300" }}>@{username}</span>
                 </div>
                 <div className={styles.postCard__contentText} onClick={() => navigate(`/post/${postId}`)}>
                     <span>
                         {content}
-                        {/* Lorem ipsum dolor, sit amet consectetur adipisicing elit. Libero voluptates dolores facilis in reiciendis iste aperiam ex excepturi, blanditiis, deserunt pariatur ab fuga illo velit porro modi nemo quibusdam harum facere totam. Rerum doloremque ipsam quibusdam, beatae enim eum iste molestias non ad reprehenderit vero adipisci officia velit asperiores! Fuga at odio eos officia, eum neque. */}
                     </span>
                 </div>
 
                 <div className={styles.postCard__actionBar}>
-                    <div className={styles.postCard__actionItem}>
-                        <Heart
-                            style={{ width: "1.3rem", fill: "#909090", cursor: "pointer" }}
-                        />
+                    <div className={`${styles.postCard__actionItem} ${styles.postCard__likePost}`}
+                        onClick={likeButtonHandler}
+                    >
+                        {checkLikedPost(likesArr, userId) ?
+                            <HeartFilled style={{ width: "1.3rem", fill: "#ed4956", cursor: "pointer" }} /> :
+                            <Heart
+                                style={{ width: "1.3rem", fill: "#909090", cursor: "pointer" }}
+                            />}
+                            <span style={{marginLeft: "0.4rem", color: "#909090", fontSize: "1.1rem"}}>
+                                {likesArr.length}
+                            </span>
                     </div>
-                    <div className={styles.postCard__actionItem}>
+                    <div className={styles.postCard__actionItem} onClick={() => navigate(`/post/${postId}`)}>
                         <Chat
-                            style={{ width: "1.3rem", fill: "#909090", cursor: "pointer" }}
-                        />
-                    </div>
-                    <div className={styles.postCard__actionItem}>
-                        <Retweet
-                            style={{ width: "1.3rem", height: "1.3rem", fill: "#909090", cursor: "pointer" }}
-                        />
-                    </div>
-                    <div className={styles.postCard__actionItem}>
-                        <BookMark
                             style={{ width: "1.3rem", fill: "#909090", cursor: "pointer" }}
                         />
                     </div>

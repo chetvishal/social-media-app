@@ -1,19 +1,16 @@
 .notificationCard {
   display: flex;
-  /* border: 1px solid black; */
   padding: 0 0.75rem;
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .notificationCard__imageContainer {
-  /* border: 1px solid black; */
-  /* width: 10%; */
   padding: 10px 10px;
 }
 
 .notificationCard__content {
-  /* border: 1px solid black; */
   padding: 10px 10px 2rem;
   width: 80%;
 }
@@ -36,4 +33,8 @@
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
+}
+
+.NotificationCard__userName:hover {
+  text-decoration: underline;
 }
