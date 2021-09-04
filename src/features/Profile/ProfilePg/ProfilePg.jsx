@@ -1,4 +1,4 @@
-import { PostCard } from "../../../Components";
+import { PostCard, Loader } from "../../../Components";
 import { ProfileCard } from '../ProfileCard/ProfileCard';
 import { useDispatch, useSelector } from "react-redux";
 import { getUserData } from "../profileSlice";
@@ -26,7 +26,7 @@ export const ProfilePg = () => {
     })
 
     return status === "loading" || status === "idle" ?
-        <div>Loading...</div> :
+        <div><Loader /></div> :
         status === "error" ?
             <div>error... {error}
             </div> :

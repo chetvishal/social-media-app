@@ -1,4 +1,4 @@
-import { PostCard } from '../../../Components/index';
+import { PostCard,Loader } from '../../../Components/index';
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router';
 import styles from './PostPg.module.css'
@@ -41,9 +41,7 @@ export const PostPg = () => {
 
     console.log("status in postPage before rendering page: ", status, "postDAta", postData)
     return status === "loading" || status === "idle" ?
-        <div>loading...
-            <button onClick={() => console.log("currentPost", currentPost, "postData: ", postData, "status: ", status)}>click me</button>
-        </div>
+        <div><Loader /></div>
         :
         <div className={styles.post}>
             <PostCard content={postData?.content}

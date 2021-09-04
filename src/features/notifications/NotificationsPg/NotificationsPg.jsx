@@ -1,6 +1,7 @@
 import styles from './NotificationsPg.module.css';
 import { NotificationCard } from '../NotificationCard/NotificationCard';
 import { useSelector } from 'react-redux';
+import { Loader } from '../../../Components';
 
 export const Notifications = () => {
 
@@ -14,7 +15,7 @@ export const Notifications = () => {
             {
                 state === "loading" || state === "idle" ?
 
-                    <div>Loading...</div> :
+                    <div><Loader /></div> :
                     state === "error" && !Array.isArray(notifications) ? <div>Error...</div> :
                         notifications.map(notification => {
                             console.log("originUser: ", notification)

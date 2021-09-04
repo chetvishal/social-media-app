@@ -1,5 +1,5 @@
 import styles from './Feed.module.css';
-import { PostCard } from '../../../Components';
+import { PostCard,Loader } from '../../../Components';
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from 'react';
 import { loadFeed } from '../feedSlice';
@@ -31,7 +31,7 @@ export const HomeFeed = () => {
         <div>
             {
                 status === "loading" ?
-                    <div>loading...</div> :
+                    <div><Loader /></div> :
                     status === "error" ?
                         <div>error {error}
 
