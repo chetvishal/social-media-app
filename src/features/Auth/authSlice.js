@@ -1,6 +1,6 @@
 import axios from "axios";
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { loginService, signupUser, unfollowUserById } from "../../Services/Auth";
+import { loginService, signupService } from "../../Services/Auth";
 // import { getUser } from "../../services/profile";
 // import { followUserById } from "../../services/auth";
 import { apiEndPoint } from "../../Services/Api";
@@ -8,7 +8,6 @@ import { apiEndPoint } from "../../Services/Api";
 export const loginUserWithCredentials = createAsyncThunk(
     "auth/loginUserWithCredentials",
     async ({ username, password }) => {
-        console.log("i ran")
         try {
 
             const login = await loginService(username, password)
@@ -27,11 +26,33 @@ export const loginUserWithCredentials = createAsyncThunk(
     }
 );
 
+export const createNewAccount = createAsyncThunk(
+    "auth/createNewAccount",
+    async ({ username, password, name, email }) => {
+        try {
+            const login = await signupService(username, password, name, email)
+            console.log("login erroor", login)
+
+            if (login.data.success) {
+                // alert("successfully created account")
+                return login.data
+            }
+            throw new Error(login.data.message);
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    }
+);
+
 export const initializeUser = createAsyncThunk(
     "auth/initializeUser",
-    async ({ username }) => {
+    async ({ username, token }) => {
         try {
-            const response = await axios.get(`${apiEndPoint()}/user/${username}`)
+            const response = await axios.get(`${apiEndPoint()}/user/${username}`, {
+                headers: {
+                    'Authorization': token
+                }
+            })
             return { userData: response.data.user, posts: response.data.posts }
         } catch (error) {
             console.log("error from getUser: ", error.response)
@@ -50,8 +71,18 @@ export const authSlice = createSlice({
         userToken: JSON.parse(localStorage?.getItem("userData"))?.userToken || null,
         userId: JSON.parse(localStorage?.getItem("userData"))?.userId || null,
         username: JSON.parse(localStorage?.getItem("userData"))?.username || null,
-        isLoggedIn: JSON.parse(localStorage?.getItem("userData"))?.isLoggedIn || null,
-        user: {},
+        isLoggedIn: JSON.parse(localStorage?.getItem("userData"))?.isLoggedIn || false,
+        user: {
+            followers: [],
+            following: [],
+            _id: "",
+            username: "",
+            name: "",
+            email: "",
+            bio: "",
+            links: "",
+            location: ""
+        },
         error: null,
     },
     reducers: {
@@ -63,7 +94,17 @@ export const authSlice = createSlice({
                 userId: null,
                 username: null,
                 isLoggedIn: false,
-                user: null,
+                user: {
+                    followers: [],
+                    following: [],
+                    _id: "",
+                    username: "",
+                    name: "",
+                    email: "",
+                    bio: "",
+                    links: "",
+                    location: ""
+                },
             };
         },
         resetAuthStatus: (state) => {
@@ -71,8 +112,8 @@ export const authSlice = createSlice({
             state.error = null;
         },
         followUser_auth: (state, action) => {
-            console.log("action followUser: ", action, state.user.following)
-            state.user.following.push(action.payload)
+            // console.log("action followUser: ", action, state.user.following)
+            state?.user?.following.push(action.payload)
         },
         unfollowUser_auth: (state, action) => {
             console.log("action unfollowUser: ", action, "array: ", state.user)
@@ -117,7 +158,19 @@ export const authSlice = createSlice({
             state.status = "error";
             state.error = action.error.message;
         },
+        [createNewAccount.pending]: (state) => {
+            state.status = "loading";
+        },
+        [createNewAccount.fulfilled]: (state, action) => {
+            // state.user = action.payload.userData
+            state.status = "fulfilled";
+        },
+        [createNewAccount.rejected]: (state, action) => {
+            // console.log("error here", action.error.message);
+            state.status = "error";
+            state.error = action.error.message;
+        },
     },
 });
-export const { followUser_auth, unfollowUser_auth } = authSlice.actions;
+export const { followUser_auth, unfollowUser_auth, logoutUser } = authSlice.actions;
 export default authSlice.reducer;

@@ -10,6 +10,7 @@ import { FollowerCard } from '../Followers/Followers';
 export const Following = () => {
 
     const { userProfile, status } = useSelector(state => state.profile)
+    const { userToken: token } = useSelector(state => state.auth)
     const { username } = useParams()
     const dispatch = useDispatch()
     useEffect(() => {
@@ -17,7 +18,7 @@ export const Following = () => {
             async () => {
                 if (status === "idle" || userProfile.username !== username && status !== "error") {
                     console.log('useEffect if ran');
-                    await dispatch(getUserData({ username }));
+                    await dispatch(getUserData({ username, token }));
                 }
             }
         )()

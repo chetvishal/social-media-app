@@ -7,36 +7,47 @@ import { checkLikedPost } from '../../../Services/PostServices';
 
 export const HomeFeed = () => {
 
-    const { feed, status } = useSelector((state) => {
+    const { feed, status, error } = useSelector((state) => {
         console.log("state.feed: ", state.feed);
         return state.feed;
     });
 
-    const { userId } = useSelector((state) => {
+    const { userId, userToken: token } = useSelector((state) => {
         return state.auth
     })
 
     const dispatch = useDispatch()
 
     useEffect(() => {
-        dispatch(loadFeed({ userId }))
+        (
+            async function () {
+                console.log("token before dispatch: ", token)
+                await dispatch(loadFeed({ userId, token }))
+            }
+        )()
     }, [])
 
     return (
         <div>
             {
                 status === "loading" ?
-                    <div>loading...</div> : feed.map(item => {
-                        return <PostCard
-                            content={item.content}
-                            name={item.userId.name}
-                            username={item.userId.username}
-                            postId={item._id}
-                            likes={checkLikedPost(item.likes, userId)}
-                            likesQty={item?.likes.length}
-                            likesArr={item?.likes}
-                        />
-                    })
+                    <div>loading...</div> :
+                    status === "error" ?
+                        <div>error {error}
+
+                            <button onClick={async () => await dispatch(loadFeed({ userId, token }))}>click me</button>
+                        </div> :
+                        feed.map(item => {
+                            return <PostCard
+                                content={item.content}
+                                name={item.userId.name}
+                                username={item.userId.username}
+                                postId={item._id}
+                                likes={checkLikedPost(item.likes, userId)}
+                                likesQty={item?.likes.length}
+                                likesArr={item?.likes}
+                            />
+                        })
             }
         </div>
     )

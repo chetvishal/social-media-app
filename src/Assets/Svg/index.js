@@ -13,3 +13,4 @@ export { ReactComponent as BookMark } from './bookmark.svg';
 export { ReactComponent as MagnifyingGlass } from './magnifying-glass.svg';
 export { ReactComponent as Location } from './location.svg';
 export { ReactComponent as Link } from './link.svg';
+export { ReactComponent as Logout } from './logout.svg';

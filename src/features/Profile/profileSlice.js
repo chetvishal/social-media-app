@@ -6,10 +6,14 @@ import { apiEndPoint } from "../../Services/Api";
 
 export const getUserData = createAsyncThunk(
     "profile/getUserData",
-    async ({ username }) => {
+    async ({ username, token }) => {
         try {
             console.log("its running apiEndPoint", apiEndPoint())
-            const response = await axios.get(`${apiEndPoint()}/user/${username}`)
+            const response = await axios.get(`${apiEndPoint()}/user/${username}`, {
+                headers: {
+                    'Authorization': token
+                }
+            })
             return { userData: response.data.user, posts: response.data.posts }
         } catch (error) {
             console.log("error from getUser: ", error.response)
@@ -20,32 +24,45 @@ export const getUserData = createAsyncThunk(
 
 export const updateUserData = createAsyncThunk(
     "profile/updateUserData",
-    async ({ name, location, website, bio, userId }) => {
+    async ({ name, location, website, bio, userId, token }) => {
         try {
             const response = await axios.post(`${apiEndPoint()}/user`, {
                 _id: userId,
                 name,
                 location,
                 bio,
-                links: website
-            })
+                links: website,
+            },
+            {
+                headers: {
+                    'Authorization': token
+                }
+            }
+            )
             console.log("response after updating the profile: ", name, location, website, bio, userId)
             return { userData: response.data.user }
         } catch (error) {
-            console.log("error from getUser: ", error.response)
-            throw new Error(error.response.data.message)
+            console.log("error from getUser: ", error.message)
+            throw new Error(error.message)
         }
     }
 );
 
 export const followUser = createAsyncThunk(
     "profile/followUser",
-    async ({ userId, toFollowUserId }) => {
+    async ({ userId, toFollowUserId, token }) => {
         try {
             const response = await axios.post(`${apiEndPoint()}/user/user/follow`, {
                 userId,
-                toFollowUserId
-            })
+                toFollowUserId,
+            },
+            {
+                headers: {
+                    'Authorization': token
+                }
+            }
+            
+            )
             console.log("repsonse after following user: ", response)
             return { userData: response.data.userData }
         } catch (error) {
@@ -57,11 +74,17 @@ export const followUser = createAsyncThunk(
 
 export const unFollowUser = createAsyncThunk(
     "profile/unFollowUser",
-    async ({ userId, toUnFollowUserId }) => {
+    async ({ userId, toUnFollowUserId, token }) => {
         try {
             const response = await axios.post(`${apiEndPoint()}/user/user/unfollow`, {
                 userId,
-                toUnFollowUserId
+                toUnFollowUserId,
+                
+            },
+            {
+                headers: {
+                    'Authorization': token
+                }
             })
             console.log("repsonse after unfollowing user: ", response)
             return { userData: response.data.userData }
@@ -130,6 +153,8 @@ export const profileSlice = createSlice({
         },
         [updateUserData.rejected]: (state, action) => {
             state.status = "error";
+            console.log("error updating data: ", action)
+            state.error = action.error.message
         },
         [followUser.pending]: (state, action) => {
             state.status = "loading";

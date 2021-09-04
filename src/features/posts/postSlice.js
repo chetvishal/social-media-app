@@ -3,25 +3,13 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { apiEndPoint } from "../../Services/Api";
 
-
-export const loadFeed = createAsyncThunk("posts/loadFeed", async ({ userId }) => {
+export const getPost = createAsyncThunk("posts/getPost", async ({ postId, token }) => {
   try {
-    const response = await axios.post(
-      `${apiEndPoint()}/post/feed`,
-      {
-        userId
+    const response = await axios.get(`${apiEndPoint()}/post/${postId}`, {
+      headers: {
+        'Authorization': token
       }
-    );
-    return response.data.posts;
-  } catch (error) {
-    console.log("error fetching feed: ", error.message)
-    throw new Error(error.message);
-  }
-});
-
-export const getPost = createAsyncThunk("posts/getPost", async (postId) => {
-  try {
-    const response = await axios.get(`${apiEndPoint()}/post/${postId}`);
+    });
     return response.data.post;
   }
   catch (error) {
@@ -30,25 +18,37 @@ export const getPost = createAsyncThunk("posts/getPost", async (postId) => {
   }
 })
 
-export const likeHandler = createAsyncThunk("posts/likeHandler", async ({ postId, userId, like }) => {
+export const likeHandler = createAsyncThunk("posts/likeHandler", async ({ postId, userId, like, token }) => {
   try {
     console.log("like handler: ", postId, userId, like)
     const response = await axios.post(`${apiEndPoint()}/post/${postId}/likes`, {
       userId,
-      like
-    })
+      like,
+
+    },
+      {
+        headers: {
+          'Authorization': token
+        }
+      })
     return { response: response.data, userId };
   } catch (error) {
     throw new Error(error.message)
   }
 })
 
-export const commentHandler = createAsyncThunk("posts/commentHandler", async ({ postId, userId, content }) => {
+export const commentHandler = createAsyncThunk("posts/commentHandler", async ({ postId, userId, content, token }) => {
   try {
     const response = await axios.post(`${apiEndPoint()}/post/${postId}/comment`, {
       commentUserId: userId,
-      commentText: content
-    })
+      commentText: content,
+
+    },
+      {
+        headers: {
+          'Authorization': token
+        }
+      })
     return { response, userId }
   } catch (error) {
     throw new Error(error.message)
@@ -59,7 +59,20 @@ export const postSlice = createSlice({
   name: 'posts',
   initialState: {
     feed: [],
-    currentPost: {},
+    currentPost: {
+      likes: [
+        ""
+      ],
+      _id: "",
+      userId: {
+        _id: "",
+        username: "",
+        name: ""
+      },
+      content: "",
+      username: "",
+      comments: [],
+    },
     status: "idle",
     error: null,
   },

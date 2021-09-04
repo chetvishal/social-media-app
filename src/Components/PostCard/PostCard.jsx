@@ -11,20 +11,20 @@ import { checkLikedPost } from '../../Services/PostServices';
 export const PostCard = ({ content, name, username, postId, likes, likesQty, likesArr }) => {
 
     const navigate = useNavigate();
-    const { userId } = useSelector((state) => {
+    const { userId, userToken } = useSelector((state) => {
         return state.auth
     })
     const dispatch = useDispatch()
 
     const likeButtonHandler = async () => {
         if (checkLikedPost(likesArr, userId)) {
-            dispatch(likeHandler({ postId, userId: userId, like: false }))
+            dispatch(likeHandler({ postId, userId: userId, like: false, token: userToken }))
             dispatch(removeLike__Post({ userId }))
             dispatch(removeLike__Feed({ userId, postId }))
             dispatch(removeLike__Profile({ userId, postId }))
         }
         else {
-            dispatch(likeHandler({ postId, userId: userId, like: true }))
+            dispatch(likeHandler({ postId, userId: userId, like: true, token: userToken }))
             dispatch(addLike__Post({ userId }))
             dispatch(addLike__Feed({ userId, postId }))
             dispatch(addLike__Profile({ userId, postId }))

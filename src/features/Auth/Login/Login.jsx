@@ -2,8 +2,9 @@ import styles from "./Login.module.css";
 // import { useAuthContext } from '../../Context/AuthContext';
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { loginUserWithCredentials } from "../authSlice";
+import { loginUserWithCredentials, logout, initializeUser } from "../authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { getNotifications } from "../../notifications/notificationSlice";
 // import { useDataContext } from "../../Context/DataContext";
 // import { Tv } from '../../Assets/index';
 
@@ -29,6 +30,15 @@ export const Login = () => {
         e.preventDefault();
         console.log("its getting clicked")
         await dispatch(loginUserWithCredentials({ username, password }))
+            .then(async (resp) => {
+                console.log("resp: login", resp)
+                if (resp.error === undefined) {
+                    await dispatch(getNotifications({ userId: resp.payload.userId, token: resp.payload.accessToken }))
+                    await dispatch(initializeUser({ username, token: resp.payload.accessToken }))
+                }else console.log("login error")
+
+            })
+
         // .then((resp) => {
         //     updateServer('LOGIN', resp)
         //     navigate(state?.from && state?.from !== "/video/:id" ? state.from : '/login')
@@ -38,12 +48,18 @@ export const Login = () => {
 
     }
 
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/')
+        }
+    })
+
     return (
         <div className={styles.login}>
             <div className={styles.loginForm}>
                 <div className={styles.loginFormHeading}>
                     <div className={styles.login__logo}>
-                        <span className={styles.login__logoText}>Sneaker.</span>
+                        <span className={styles.login__logoText}>Street.Social</span>
                     </div>
 
                     <span className="util-heading-medium" style={{ fontWeight: "500" }}>Sign in</span>
@@ -65,12 +81,12 @@ export const Login = () => {
                 </form>
 
 
-                <span className="util-heading-small" style={{ color: "red", textAlign: "center" }}>{errorText}</span>
+                <span className="util-heading-small" style={{ color: "red", textAlign: "center" }}>{error}</span>
                 <span className={`util-heading-small ${styles.signUpLink}`}>
                     <Link to="/signup" className="nostyle">
                         Don't have an account yet?
                     </Link>
-                    <button
+                    {/* <button
                         onClick={() => console.log("state data: ", status,
                             userToken,
                             userId,
@@ -78,7 +94,7 @@ export const Login = () => {
                             isLoggedIn,
                             user,
                             error)}
-                    >click me</button>
+                    >click me</button> */}
                 </span>
             </div>
         </div >

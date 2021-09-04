@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import styles from './navbar.module.css';
 // import '../CSS/badge.css';
-import { Hamburger, Tv } from '../../Assets/Svg/index';
+import { Hamburger, Tv, Logout } from '../../Assets/Svg/index';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -40,6 +40,7 @@ export const Navbar = () => {
                     <li><Link className="nostyle" to="/search" onClick={handleCheck}>Search</Link></li>
                     <li><Link className="nostyle" to="/notifications" onClick={handleCheck}>Notifications</Link></li>
                     <li><Link className="nostyle" to={`/profile/${username}`} onClick={handleCheck}>Profile</Link></li>
+                    <li>Logout</li>
                 </ul>
             </nav>
         </header>

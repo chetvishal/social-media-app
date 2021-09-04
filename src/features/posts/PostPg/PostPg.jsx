@@ -12,7 +12,7 @@ export const PostPg = () => {
     const { currentPost, status } = useSelector((state) => {
         return state.posts;
     });
-    const { userId } = useSelector((state) => {
+    const { userId, userToken } = useSelector((state) => {
         return state.auth
     })
     const dispatch = useDispatch()
@@ -22,7 +22,7 @@ export const PostPg = () => {
 
     const commentBtnHandler = async () => {
         console.log("commment button")
-        dispatch(commentHandler({ userId, postId, content: postTextBox.current.value }))
+        dispatch(commentHandler({ userId, postId, content: postTextBox.current.value, token: userToken }))
     }
 
     useEffect(() => {
@@ -32,20 +32,11 @@ export const PostPg = () => {
             console.log("status in postPage useEffect: ", status, currentPost, postId)
             if (currentPost._id !== postId || status === "idle") {
                 console.log('useEffect if ran');
-                await dispatch(getPost(postId));
+                await dispatch(getPost({postId,token: userToken }));
             }
         })();
     }, []);
 
-    // console.log("currentPost: ", currentPost)
-    // let postData = status === "fulfilled_getPost" ? currentPost : {
-    //     content: "",
-    //     userId: {
-    //         name: "",
-    //         username: ""
-    //     },
-    //     _id: ""
-    // }
     let postData = currentPost;
 
     console.log("status in postPage before rendering page: ", status, "postDAta", postData)
@@ -95,7 +86,7 @@ export const PostPg = () => {
                 </div>
             </div>
 
-            <div style={{ display: postData.comments.length !== 0 ? "flex" : "none", padding: "6px 22px" }}>
+            <div style={{ display: postData?.comments?.length !== 0 ? "flex" : "none", padding: "6px 22px" }}>
                     <h2>Comments</h2>
                 </div>
             {/* PostCard */}

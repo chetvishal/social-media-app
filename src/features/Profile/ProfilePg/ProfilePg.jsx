@@ -11,7 +11,7 @@ export const ProfilePg = () => {
 
     const dispatch = useDispatch()
     const { status, userProfile, error, userPosts } = useSelector(state => state.profile)
-    const { userId, user } = useSelector(state => state.auth)
+    const { userId, user, userToken:token } = useSelector(state => state.auth)
     const { username } = useParams()
 
     useEffect(() => {
@@ -20,7 +20,7 @@ export const ProfilePg = () => {
             console.log("status in postPage useEffect: ", status, userProfile, username)
             if (status === "idle" || userProfile.username !== username && status !== "error") {
                 console.log('useEffect if ran');
-                await dispatch(getUserData({ username }));
+                await dispatch(getUserData({ username, token }));
             }
         })();
     })
@@ -28,7 +28,8 @@ export const ProfilePg = () => {
     return status === "loading" || status === "idle" ?
         <div>Loading...</div> :
         status === "error" ?
-            <div>error... </div> :
+            <div>error... {error}
+            </div> :
             <div>
                 <ProfileCard
                     bio={userProfile?.bio}
@@ -40,7 +41,7 @@ export const ProfilePg = () => {
                     followingLength={userProfile?.following?.length}
                     userId={userProfile?._id}
                     avatarUrl={userProfile?.avatarUrl}
-                    isFollowing={isFollowing(user.following, userProfile?._id)}
+                    isFollowing={isFollowing(user?.following, userProfile?._id)}
                 />
                 <div style={{ display: "flex", padding: "6px 22px" }}>
                     <h2>Tweets</h2>

@@ -5,11 +5,13 @@ import { apiEndPoint } from "../../Services/Api";
 
 export const getUserSearchResult = createAsyncThunk(
     "search/getUserSearchResult",
-    async ({ searchQuery }) => {
+    async ({ searchQuery, token }) => {
         try {
             const response = await axios.get(`${apiEndPoint()}/search`, {
-                // data: { userId },
-                params: { searchQuery }
+                params: { searchQuery },
+                headers: {
+                    'Authorization': token
+                }
             })
             return { searchResult: response.data.users }
         } catch (error) {

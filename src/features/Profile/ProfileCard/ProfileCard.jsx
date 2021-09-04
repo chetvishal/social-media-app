@@ -20,16 +20,16 @@ export const ProfileCard = ({
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { username: username_auth, userId: userId_auth } = useSelector(state => state.auth)
+    const { username: username_auth, userId: userId_auth, user, userToken: token } = useSelector(state => state.auth)
     const { username: username_Params } = useParams()
     const handleFollowClick = (e) => {
 
         // isFollowing ? console.log("feature not available"):  dispatch(followUser({ userId: userId_auth, toFollowUserId: userId }))
         if (!isFollowing) {
-            dispatch(followUser({ userId: userId_auth, toFollowUserId: userId }))
+            dispatch(followUser({ userId: userId_auth, toFollowUserId: userId, token }))
             dispatch(followUser_auth({ _id: userId, name, username, avatarUrl }))
         } else {
-            dispatch(unFollowUser({ userId: userId_auth, toUnFollowUserId: userId }))
+            dispatch(unFollowUser({ userId: userId_auth, toUnFollowUserId: userId, token }))
             dispatch(unfollowUser_auth({ _id: userId, name, username, avatarUrl }))
         }
     }
@@ -43,15 +43,7 @@ export const ProfileCard = ({
                 />
             </div>
             {/* <button onClick={() => console.log("profile data", bio,
-                "name", name,
-                "username", username,
-                "location", location,
-                "website", website,
-                "followersLength", followersLength,
-                "followingLength", followingLength,
-                "userId", userId,
-                "isFollowing", isFollowing,
-                "avatarUrl", avatarUrl)}>click me</button> */}
+                "user", user,)}>click me</button> */}
             <div className={styles.profile__content} style={{ border: "1px solid black;" }}>
                 <div className={styles.profile__contentHeading}>
                     <span style={{ fontSize: "1rem", fontWeight: "500" }}>{name} </span>

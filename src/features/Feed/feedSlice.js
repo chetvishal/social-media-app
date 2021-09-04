@@ -3,14 +3,18 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { apiEndPoint } from "../../Services/Api";
 
-export const loadFeed = createAsyncThunk("feed/loadFeed", async ({ userId }) => {
+export const loadFeed = createAsyncThunk("feed/loadFeed", async ({ userId, token }) => {
     try {
         const response = await axios.post(
             `${apiEndPoint()}/post/feed`,
             {
                 userId
-            }
-        );
+            },
+            {
+                headers: {
+                    'Authorization': token
+                }
+            });
         return response.data.posts;
     } catch (error) {
         console.log("error fetching feed: ", error.message)
@@ -18,14 +22,20 @@ export const loadFeed = createAsyncThunk("feed/loadFeed", async ({ userId }) => 
     }
 });
 
-export const createNewPost = createAsyncThunk("feed/createNewPost", async ({ userId, content, username }) => {
+export const createNewPost = createAsyncThunk("feed/createNewPost", async ({ userId, content, username, token }) => {
     try {
         const response = await axios.post(
             `${apiEndPoint()}/post`,
             {
                 userId,
                 content,
-                username
+                username,
+               
+            },
+            {
+                headers: {
+                    'Authorization': token
+                }
             }
         );
         return response.data.post;

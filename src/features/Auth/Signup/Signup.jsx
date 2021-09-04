@@ -1,12 +1,16 @@
 import styles from './Signup.module.css'
 import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { createNewAccount, loginUserWithCredentials } from '../authSlice';
 
 export const Signup = () => {
 
-    const [FormData, setFormData] = useState({ email: "", username: "", password: "" })
+    const [FormData, setFormData] = useState({ email: "", username: "", password: "", name: "" })
     const [errorText, setErrorText] = useState("")
     const navigate = useNavigate()
+    const dispatch = useDispatch()
+    const { error, isLoggedIn } = useSelector(state => state.auth)
 
     const formChangeHandler = (e) => {
         e.preventDefault();
@@ -20,6 +24,9 @@ export const Signup = () => {
             case 'PASSWORD':
                 setFormData(FormData => { return { ...FormData, password: e.target.value } })
                 break;
+            case 'NAME':
+                setFormData(FormData => { return { ...FormData, name: e.target.value } })
+                break;
             default:
                 console.log("default case")
                 break;
@@ -28,6 +35,24 @@ export const Signup = () => {
 
     const handleSignupSubmit = async (e) => {
         e.preventDefault()
+        console.log("handle Signup");
+        await dispatch(createNewAccount({
+            username: FormData.username,
+            password: FormData.password,
+            name: FormData.name,
+            email: FormData.email
+        }))
+
+        await dispatch(loginUserWithCredentials({
+            username: FormData.username,
+            password: FormData.password,
+        }))
+        // await dispatch(createNewAccount({
+        //     username: FormData.username,
+        //     password: FormData.username,
+        //     name: FormData.name,
+        //     email: FormData.password
+        // }))
         // await signupUser(FormData)
         //     .then(resp => {
         //         loginUserWithCredentials(resp.username, resp.password)
@@ -36,6 +61,12 @@ export const Signup = () => {
         //         setErrorText(() => err.message)
         //     })
     }
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/')
+        }
+    })
 
     return (
         <div className={styles.signup}>
@@ -64,19 +95,26 @@ export const Signup = () => {
                         name="USERNAME"
                         onChange={formChangeHandler}
                     />
+                    <span className={`util-heading-small ${styles.signupInputText}`}>Name</span>
+                    <input type="text" className={styles.signupInput}
+                        name="NAME"
+                        onChange={formChangeHandler}
+                    />
                     <span className={`util-heading-small ${styles.signupInputText}`}>Password</span>
                     <input type="password" className={styles.signupInput}
                         name="PASSWORD"
                         onChange={formChangeHandler}
                     />
-                    <button
-                        className="submit-button"
-                        style={{ backgroundColor: "black" }}
-                        // onClick={handleSignupSubmit}
-                        type="submit"
-                    >SIGN UP</button>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <button
+                            className="submit-button"
+                            style={{ backgroundColor: "black" }}
+                            // onClick={handleSignupSubmit}
+                            type="submit"
+                        >SIGN UP</button>
+                    </div>
                 </form>
-                <span className="util-heading-small" style={{ color: "red", textAlign: "center" }}>{errorText}</span>
+                <span className="util-heading-small" style={{ color: "red", textAlign: "center" }}>{error}</span>
             </div>
         </div>
     )

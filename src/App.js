@@ -1,22 +1,24 @@
 import React, { useEffect } from 'react';
-import { Counter } from './features/counter/Counter';
 import { Home, Notifications, ProfilePg, EditProfile, Followers, Following, PostPg, Login, SearchPg, Signup } from './features/index'
-import { Navbar, Sidebar } from './Components/index';
+import { Navbar, Sidebar, NoRoute } from './Components/index';
 import { Route, Routes } from 'react-router-dom';
 import styles from './App.module.css';
 import { useDispatch, useSelector } from 'react-redux'
 import { initializeUser } from './features/Auth/authSlice';
-import { getNotifications } from './features/notifications/notificationSlice'
+import { getNotifications } from './features/notifications/notificationSlice';
+import { PrivateRoute } from './Services/PrivateRoute'
 
 function App() {
 
-  const { username, userId } = useSelector(state => state.auth)
+  const { username, userId, isLoggedIn, userToken } = useSelector(state => state.auth)
   const dispatch = useDispatch()
 
   useEffect(() => {
     console.log("app.js runs", username)
-    dispatch(initializeUser({ username }))
-    dispatch(getNotifications({ userId }))
+    if (isLoggedIn) {
+      dispatch(initializeUser({ username, token: userToken }))
+      dispatch(getNotifications({ userId, token: userToken }))
+    }
   }, [])
 
   return (
@@ -31,14 +33,15 @@ function App() {
           </div>
           <div className={styles.App__content}>
             <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/notifications" element={<Notifications />} />
-              <Route path="/profile/:username" element={<ProfilePg />} />
-              <Route path="/profile/edit" element={<EditProfile />} />
-              <Route path="/profile/:username/following" element={<Following />} />
-              <Route path="/profile/:username/followers" element={<Followers />} />
-              <Route path="/post/:postId" element={<PostPg />} />
-              <Route path="/search" element={<SearchPg />} />
+              <PrivateRoute path="/" element={<Home />} />
+              <PrivateRoute path="/notifications" element={<Notifications />} />
+              <PrivateRoute path="/profile/:username" element={<ProfilePg />} />
+              <PrivateRoute path="/profile/edit" element={<EditProfile />} />
+              <PrivateRoute path="/profile/:username/following" element={<Following />} />
+              <PrivateRoute path="/profile/:username/followers" element={<Followers />} />
+              <PrivateRoute path="/post/:postId" element={<PostPg />} />
+              <PrivateRoute path="/search" element={<SearchPg />} />
+              <Route path="*" element={<NoRoute />} />
             </Routes>
           </div>
         </div>

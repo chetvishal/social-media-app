@@ -5,7 +5,7 @@ import { createNewPost } from '../../features/Feed/feedSlice';
 
 export const NewPost = () => {
     const newPostTextBox = useRef(null);
-    const { userId, username } = useSelector(state => state.auth)
+    const { userId, username, userToken: token } = useSelector(state => state.auth)
     const dispatch = useDispatch();
     const keyPressHandler = (e) => {
         if (e.key === 'Enter') {
@@ -17,8 +17,10 @@ export const NewPost = () => {
         dispatch(createNewPost({
             userId,
             username,
-            content: newPostTextBox.current.value
+            content: newPostTextBox.current.value,
+            token
         }))
+        newPostTextBox.current.value=""
     }
 
     return (

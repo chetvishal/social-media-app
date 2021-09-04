@@ -8,9 +8,15 @@ import { updateUserData } from '../profileSlice';
 export const EditProfile = ({ text }) => {
 
     const navigate = useNavigate()
-    const [FormData, setFormData] = useState({ name: "", location: "", bio: "", website: "" });
+    const { userId, user, username, userToken: token } = useSelector(state => state.auth)
+    console.log("userdata updatProfile: ", user)
+    const [FormData, setFormData] = useState({
+        name: user.name,
+        location: user?.location === undefined ? "" : user?.location,
+        bio: user?.bio === undefined ? "" : user?.bio,
+        website: user?.links === undefined ? "" : user?.links
+    });
     const dispatch = useDispatch()
-    const { userId } = useSelector(state => state.auth)
 
     const formChangeHandler = (e) => {
         e.preventDefault();
@@ -52,7 +58,7 @@ export const EditProfile = ({ text }) => {
                     <span className="util-heading-medium">Email</span>
                 </div>
                 <div className={styles.editProfile__editItemChange}>
-                    <span>danabramove@gmail.com</span>
+                    <span>{user?.email}</span>
                 </div>
             </div>
             <div className={styles.editProfile__editItem}>
@@ -60,7 +66,7 @@ export const EditProfile = ({ text }) => {
                     <span className="util-heading-medium">Username</span>
                 </div>
                 <div className={styles.editProfile__editItemChange}>
-                    <span>@danabramov</span>
+                    <span>@{username}</span>
                 </div>
             </div>
             <div className={styles.editProfile__editItem}>
@@ -68,7 +74,15 @@ export const EditProfile = ({ text }) => {
                     <span className="util-heading-medium">Name</span>
                 </div>
                 <div className={styles.editProfile__editItemChange}>
-                    <input autocomplete="off" type="text" placeholder="Enter name" className={styles.editProfileInput} onChange={formChangeHandler} name="NAME" />
+                    <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Enter name"
+                        className={styles.editProfileInput}
+                        onChange={formChangeHandler}
+                        name="NAME"
+                        value={FormData.name}
+                    />
                 </div>
             </div>
             <div className={styles.editProfile__editItem}>
@@ -76,7 +90,15 @@ export const EditProfile = ({ text }) => {
                     <span className="util-heading-medium">Location</span>
                 </div>
                 <div className={styles.editProfile__editItemChange}>
-                    <input autocomplete="off" type="text" placeholder="Enter Location" className={styles.editProfileInput}onChange={formChangeHandler} name="LOCATION" />
+                    <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Enter Location"
+                        className={styles.editProfileInput}
+                        onChange={formChangeHandler}
+                        name="LOCATION"
+                        value={FormData.location}
+                    />
                 </div>
             </div>
             <div className={styles.editProfile__editItem}>
@@ -84,7 +106,15 @@ export const EditProfile = ({ text }) => {
                     <span className="util-heading-medium">Website</span>
                 </div>
                 <div className={styles.editProfile__editItemChange}>
-                    <input autocomplete="off" type="text" placeholder="Enter URL" className={styles.editProfileInput} onChange={formChangeHandler} name="WEBSITE" />
+                    <input
+                        autocomplete="off"
+                        type="text"
+                        placeholder="Enter URL"
+                        className={styles.editProfileInput}
+                        onChange={formChangeHandler}
+                        name="WEBSITE"
+                        value={FormData.website}
+                    />
                 </div>
             </div>
             <div className={styles.editProfile__editItem}>
@@ -92,23 +122,30 @@ export const EditProfile = ({ text }) => {
                     <span className="util-heading-medium">Bio</span>
                 </div>
                 <div className={styles.editProfile__editItemChange}>
-                    <textarea 
+                    <textarea
                         className={styles.editProfile__textarea}
                         rows="3"
                         maxLength="150"
-                        onChange={formChangeHandler} 
-                        name="BIO"></textarea>
+                        onChange={formChangeHandler}
+                        name="BIO"
+                        value={FormData.bio}
+                    ></textarea>
                 </div>
             </div>
             <div className={styles.editProfile__editItem}>
                 <div className={styles.editProfile__editItemName}>
-                    
+
                 </div>
                 <div className={styles.editProfile__editItemChange}>
                     <button
                         onClick={() => {
                             console.log("form data: ", FormData)
-                            dispatch(updateUserData({ ...FormData, userId }))
+                            FormData.name !== "" ?
+                                dispatch(updateUserData({ ...FormData, userId, token }))
+                                    .then(() => navigate(`/profile/${username}`))
+                                    .catch(error => alert("failed to update user data, ", error))
+                                 :
+                                alert("name should not be empty")
 
                         }}
                         className={`submit-button ${styles.editProfile__Btn}`}>UPDATE

@@ -1,11 +1,13 @@
 import styles from './Sidebar.module.css';
-import { Home2 as HomeIcon, Bell, User, User2, MagnifyingGlass } from '../../Assets/Svg/index';
+import { Home2 as HomeIcon, Bell, User, User2, MagnifyingGlass, Logout } from '../../Assets/Svg/index';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '../../features/Auth/authSlice';
 
 export const Sidebar = () => {
 
-    const { userId, username } = useSelector(state => state.auth)
+    const { userId, username, isLoggedIn } = useSelector(state => state.auth)
+    const dispatch = useDispatch();
 
     return (
         <div className={styles.home__sidebar}>
@@ -45,6 +47,14 @@ export const Sidebar = () => {
                         <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Profile</span>
                     </div>
                 </Link>
+                <div className={styles.home__sidebarItem} onClick={() => {
+                    console.log("onClick clicked: ")
+                    dispatch(logoutUser())}}>
+                    <Logout
+                        className={styles.home__sidebarIcon}
+                    />
+                    <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Logout</span>
+                </div>
             </div>
         </div>
     )

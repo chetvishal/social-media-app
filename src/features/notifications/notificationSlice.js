@@ -5,11 +5,14 @@ import { apiEndPoint } from "../../Services/Api";
 
 export const getNotifications = createAsyncThunk(
     "notification/getNotifications",
-    async ({ userId }) => {
+    async ({ userId, token }) => {
         try {
             const response = await axios.get(`${apiEndPoint()}/notification/${userId}`, {
                 // data: { userId },
-                params: { userId }
+                params: { userId },
+                headers: {
+                    'Authorization': token
+                }
             })
             console.log("response after getting notification: ", response, "userId", userId)
             return { notifications: response.data.notifications }
