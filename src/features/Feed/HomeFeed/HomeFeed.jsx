@@ -1,5 +1,5 @@
 import styles from './Feed.module.css';
-import { PostCard,Loader } from '../../../Components';
+import { PostCard, Loader } from '../../../Components';
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from 'react';
 import { loadFeed } from '../feedSlice';
@@ -33,10 +33,7 @@ export const HomeFeed = () => {
                 status === "loading" ?
                     <div><Loader /></div> :
                     status === "error" ?
-                        <div>error {error}
-
-                            <button onClick={async () => await dispatch(loadFeed({ userId, token }))}>click me</button>
-                        </div> :
+                        <div>error {error}</div> :
                         feed.map(item => {
                             return <PostCard
                                 content={item.content}
@@ -46,6 +43,7 @@ export const HomeFeed = () => {
                                 likes={checkLikedPost(item.likes, userId)}
                                 likesQty={item?.likes.length}
                                 likesArr={item?.likes}
+                                avatarUrl={item?.userId?.avatarUrl}
                             />
                         })
             }

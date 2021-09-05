@@ -1,7 +1,7 @@
 import styles from './NotificationCard.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 
-export const NotificationCard = ({ type, name, username, postId }) => {
+export const NotificationCard = ({ type, name, username, postId, avatarUrl }) => {
 
     const navigate = useNavigate()
 
@@ -24,7 +24,11 @@ export const NotificationCard = ({ type, name, username, postId }) => {
         <div className={styles.notificationCard}>
             <div className={styles.notificationCard__imageContainer}>
                 <img
-                    src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
+                    src={
+                        avatarUrl === undefined ? "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" :
+                            avatarUrl
+                    }
+                     alt="profile pic"
                     className={styles.notificationCard__image}
                 />
             </div>

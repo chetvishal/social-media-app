@@ -58,6 +58,7 @@ export const ProfilePg = () => {
                                 postId={post._id}
                                 likes={checkLikedPost(post.likes, userId)}
                                 likesArr={post?.likes}
+                                avatarUrl={post?.userId?.avatarUrl}
                             />
                         })
                 }

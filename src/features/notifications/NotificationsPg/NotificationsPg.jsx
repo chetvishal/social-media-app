@@ -24,6 +24,7 @@ export const Notifications = () => {
                                 name={notification?.originUser?.name}
                                 username={notification?.originUser?.username}
                                 postId={notification?.postId}
+                                avatarUrl={notification?.avatarUrl}
                             />
                         })
             }

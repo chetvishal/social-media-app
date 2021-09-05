@@ -1,4 +1,4 @@
-import { PostCard,Loader } from '../../../Components/index';
+import { PostCard, Loader } from '../../../Components/index';
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from 'react-router';
 import styles from './PostPg.module.css'
@@ -12,7 +12,7 @@ export const PostPg = () => {
     const { currentPost, status } = useSelector((state) => {
         return state.posts;
     });
-    const { userId, userToken } = useSelector((state) => {
+    const { userId, userToken, user } = useSelector((state) => {
         return state.auth
     })
     const dispatch = useDispatch()
@@ -32,7 +32,7 @@ export const PostPg = () => {
             console.log("status in postPage useEffect: ", status, currentPost, postId)
             if (currentPost._id !== postId || status === "idle") {
                 console.log('useEffect if ran');
-                await dispatch(getPost({postId,token: userToken }));
+                await dispatch(getPost({ postId, token: userToken }));
             }
         })();
     }, []);
@@ -50,11 +50,16 @@ export const PostPg = () => {
                 postId={postData?._id}
                 likes={checkLikedPost(postData?.likes, userId)}
                 likesArr={postData?.likes}
+                avatarUrl={postData?.userId?.avatarUrl}
             />
             <div className={styles.post__newComment}>
                 <div className={styles.post__newComment__imageContainer}>
                     <img
-                        src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
+                        src={
+                            user?.avatarUrl === undefined ? "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" :
+                                user?.avatarUrl
+                        }
+                        alt="profile pic"
                         className={styles.post__newComment__image}
                     />
                 </div>
@@ -85,15 +90,19 @@ export const PostPg = () => {
             </div>
 
             <div style={{ display: postData?.comments?.length !== 0 ? "flex" : "none", padding: "6px 22px" }}>
-                    <h2>Comments</h2>
-                </div>
+                <h2>Comments</h2>
+            </div>
             {/* PostCard */}
             {
                 postData.comments.map(item => {
                     return <div className={styles.post__comment}>
                         <div className={styles.post__comment__imageContainer}>
                             <img
-                                src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
+                                src={
+                                    item?.commentUserId?.avatarUrl === undefined ? "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" :
+                                        item?.commentUserId?.avatarUrl
+                                }
+                                alt="profile pic"
                                 className={styles.post__comment__image}
                             />
                         </div>

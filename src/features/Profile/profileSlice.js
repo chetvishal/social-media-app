@@ -33,11 +33,11 @@ export const updateUserData = createAsyncThunk(
                 bio,
                 links: website,
             },
-            {
-                headers: {
-                    'Authorization': token
+                {
+                    headers: {
+                        'Authorization': token
+                    }
                 }
-            }
             )
             console.log("response after updating the profile: ", name, location, website, bio, userId)
             return { userData: response.data.user }
@@ -56,12 +56,12 @@ export const followUser = createAsyncThunk(
                 userId,
                 toFollowUserId,
             },
-            {
-                headers: {
-                    'Authorization': token
+                {
+                    headers: {
+                        'Authorization': token
+                    }
                 }
-            }
-            
+
             )
             console.log("repsonse after following user: ", response)
             return { userData: response.data.userData }
@@ -79,13 +79,13 @@ export const unFollowUser = createAsyncThunk(
             const response = await axios.post(`${apiEndPoint()}/user/user/unfollow`, {
                 userId,
                 toUnFollowUserId,
-                
+
             },
-            {
-                headers: {
-                    'Authorization': token
-                }
-            })
+                {
+                    headers: {
+                        'Authorization': token
+                    }
+                })
             console.log("repsonse after unfollowing user: ", response)
             return { userData: response.data.userData }
         } catch (error) {
@@ -94,6 +94,53 @@ export const unFollowUser = createAsyncThunk(
         }
     }
 );
+
+export const uploadProfilePic = createAsyncThunk("profile/uploadProfilePic",
+    async ({ encodedImage, token, userId }) => {
+        try {
+            const uploadImageResponse = await axios.post(`${apiEndPoint()}/user/profilepic`, {
+                userId,
+                encodedImage
+            }, {
+                headers: {
+                    'Authorization': token
+                }
+            })
+            console.log("repsonse after uploading pic: ", uploadImageResponse)
+            return uploadImageResponse
+
+            // fetch('/api/upload', {
+            //     method: 'POST',
+            //     body: JSON.stringify({ data: base64EncodedImage }),
+            //     headers: { 'Content-Type': 'application/json' },
+            // });
+
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.response.data.message)
+        }
+    }
+);
+
+
+
+
+
+// async (base64EncodedImage) => {
+//     try {
+//         await fetch('/api/upload', {
+//             method: 'POST',
+//             body: JSON.stringify({ data: base64EncodedImage }),
+//             headers: { 'Content-Type': 'application/json' },
+//         });
+//         setFileInputState('');
+//         setPreviewSource('');
+//         setSuccessMsg('Image uploaded successfully');
+//     } catch (err) {
+//         console.error(err);
+//         setErrMsg('Something went wrong!');
+//     }
+// };
 
 
 export const profileSlice = createSlice({
@@ -176,6 +223,16 @@ export const profileSlice = createSlice({
             state.status = "fulfilled";
         },
         [unFollowUser.rejected]: (state, action) => {
+            state.status = "error";
+        },
+        [uploadProfilePic.pending]: (state, action) => {
+            state.status = "loading";
+        },
+        [uploadProfilePic.fulfilled]: (state, action) => {
+            console.log("successfully uploaded profile picture")
+            state.status = "fulfilled";
+        },
+        [uploadProfilePic.rejected]: (state, action) => {
             state.status = "error";
         }
     }

@@ -33,12 +33,16 @@ export const ProfileCard = ({
             dispatch(unfollowUser_auth({ _id: userId, name, username, avatarUrl }))
         }
     }
-
     return (
         <div className={styles.profile}>
             <div className={styles.profile__imageContainer}>
                 <img
-                    src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
+                    src={
+                        avatarUrl === undefined ? "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" :
+                            avatarUrl
+                    }
+                    // src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png"
+                    alt="profile pic"
                     className={styles.profile__image}
                 />
             </div>

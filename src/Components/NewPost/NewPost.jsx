@@ -5,7 +5,7 @@ import { createNewPost } from '../../features/Feed/feedSlice';
 
 export const NewPost = () => {
     const newPostTextBox = useRef(null);
-    const { userId, username, userToken: token } = useSelector(state => state.auth)
+    const { userId, username, userToken: token, user } = useSelector(state => state.auth)
     const dispatch = useDispatch();
     const keyPressHandler = (e) => {
         if (e.key === 'Enter') {
@@ -20,14 +20,18 @@ export const NewPost = () => {
             content: newPostTextBox.current.value,
             token
         }))
-        newPostTextBox.current.value=""
+        newPostTextBox.current.value = ""
     }
 
     return (
         <div className={styles.newPost}>
             <div className={styles.newPost__imageContainer}>
                 <img
-                    src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
+                    src={
+                        user?.avatarUrl === undefined ? "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" :
+                            user?.avatarUrl
+                    }
+                    alt="profile pic"
                     className={styles.newPost__image}
                 />
             </div>

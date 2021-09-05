@@ -3,12 +3,14 @@ import { Link, Chat, Retweet, Location } from '../../../Assets/Svg/index';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserData } from '../profileSlice';
+import { updateUserData, uploadProfilePic } from '../profileSlice';
 
 export const EditProfile = ({ text }) => {
 
     const navigate = useNavigate()
     const { userId, user, username, userToken: token } = useSelector(state => state.auth)
+    const [pic, setPic] = useState(null);
+    const [profilePic, setProfilePic] = useState("https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png");
     console.log("userdata updatProfile: ", user)
     const [FormData, setFormData] = useState({
         name: user.name,
@@ -17,6 +19,28 @@ export const EditProfile = ({ text }) => {
         website: user?.links === undefined ? "" : user?.links
     });
     const dispatch = useDispatch()
+
+    const handleFileInputChange = (e) => {
+        const file = e.target.files[0];
+        setPic(file);
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+            setProfilePic(reader.result)
+            // dispatch(uploadProfilePic({ userId, encodedImage: reader.result, token }))
+        };
+    };
+
+    const handleProfilePicChange = (e) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(pic);
+        reader.onloadend = () => {
+            setProfilePic(reader.result)
+            console.log(reader.result)
+            dispatch(uploadProfilePic({ userId, encodedImage: reader.result, token }))
+        };
+    }
 
     const formChangeHandler = (e) => {
         e.preventDefault();
@@ -46,11 +70,25 @@ export const EditProfile = ({ text }) => {
                     <span className="util-heading-medium">Avatar</span>
                 </div>
                 <div className={styles.editProfile__editItemChange}>
-                    <img
-                        src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
-                        className={styles.editProfile__image}
-                    />
-                    <span style={{ marginLeft: "1rem" }}>Change</span>
+                    <div className={styles.editProfile__changeProfilePic}>
+                        <label for="fileInput"><img
+                            src={profilePic} alt="profile pic"
+                            className={styles.editProfile__image}
+                        /></label>
+                        <input
+                            id="fileInput"
+                            type="file"
+                            name="image"
+                            onChange={handleFileInputChange}
+                            // value={fileInputState}
+                            className="form-input"
+                            style={{ display: "none" }}
+                        />
+                        <span
+                            style={{ marginLeft: "1rem" }}
+                            onClick={handleProfilePicChange}
+                        > Change</span>
+                    </div>
                 </div>
             </div>
             <div className={styles.editProfile__editItem}>
@@ -144,7 +182,7 @@ export const EditProfile = ({ text }) => {
                                 dispatch(updateUserData({ ...FormData, userId, token }))
                                     .then(() => navigate(`/profile/${username}`))
                                     .catch(error => alert("failed to update user data, ", error))
-                                 :
+                                :
                                 alert("name should not be empty")
 
                         }}

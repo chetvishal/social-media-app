@@ -39,7 +39,7 @@ export const SearchPg = () => {
             <div className={styles.searchResult}>
                 {
                     searchResult.map(item => {
-                        return <FollowerCard name={item.name} username={item.username} />
+                        return <FollowerCard name={item.name} username={item.username} avatarUrl={item?.avatarUrl}/>
                     })
                 }
             </div>

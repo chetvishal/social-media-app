@@ -8,7 +8,7 @@ import { addLike__Profile, removeLike__Profile } from '../../features/Profile/pr
 import { checkLikedPost } from '../../Services/PostServices';
 
 
-export const PostCard = ({ content, name, username, postId, likes, likesQty, likesArr }) => {
+export const PostCard = ({ content, name, username, postId, likes, likesQty, likesArr, avatarUrl }) => {
 
     const navigate = useNavigate();
     const { userId, userToken } = useSelector((state) => {
@@ -31,11 +31,16 @@ export const PostCard = ({ content, name, username, postId, likes, likesQty, lik
         }
     }
 
+    console.log("avatarUrl: ", avatarUrl)
     return (
         <div className={styles.postCard}>
             <div className={styles.postCard__imageContainer}>
                 <img
-                    src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
+                    src={
+                        avatarUrl === undefined ? "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" :
+                            avatarUrl
+                    }
+                    alt="profile pic"
                     className={styles.postCard__image}
                 />
             </div>
@@ -59,9 +64,9 @@ export const PostCard = ({ content, name, username, postId, likes, likesQty, lik
                             <Heart
                                 style={{ width: "1.3rem", fill: "#909090", cursor: "pointer" }}
                             />}
-                            <span style={{marginLeft: "0.4rem", color: "#909090", fontSize: "1.1rem"}}>
-                                {likesArr.length}
-                            </span>
+                        <span style={{ marginLeft: "0.4rem", color: "#909090", fontSize: "1.1rem" }}>
+                            {likesArr.length}
+                        </span>
                     </div>
                     <div className={styles.postCard__actionItem} onClick={() => navigate(`/post/${postId}`)}>
                         <Chat

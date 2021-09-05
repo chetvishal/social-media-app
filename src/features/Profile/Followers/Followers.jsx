@@ -6,13 +6,17 @@ import { useEffect } from 'react';
 import { getUserData } from '../profileSlice';
 
 
-export const FollowerCard = ({ username, name }) => {
+export const FollowerCard = ({ username, name, avatarUrl }) => {
     const navigate = useNavigate()
     return (
         <div className={styles.followersCard} onClick={() => navigate(`/profile/${username}`)}>
             <div className={styles.followersCard__imageContainer}>
                 <img
-                    src="https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" alt="profile pic"
+                    src={
+                        avatarUrl === undefined ? "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" :
+                            avatarUrl
+                    }
+                    alt="profile pic"
                     className={styles.followersCard__image}
                 />
             </div>
