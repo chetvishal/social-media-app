@@ -2,13 +2,15 @@ import React, { useRef } from 'react';
 import styles from './navbar.module.css';
 import { Hamburger,} from '../../Assets/Svg/index';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '../../features/Auth/authSlice';
 
 export const Navbar = () => {
 
     const { username } = useSelector(state => state.auth)
 
     const check = useRef(null);
+    const dispatch = useDispatch();
 
     const handleCheck = () => check.current.checked = false;
 
@@ -37,7 +39,11 @@ export const Navbar = () => {
                     <li><Link className="nostyle" to="/search" onClick={handleCheck}>Search</Link></li>
                     <li><Link className="nostyle" to="/notifications" onClick={handleCheck}>Notifications</Link></li>
                     <li><Link className="nostyle" to={`/profile/${username}`} onClick={handleCheck}>Profile</Link></li>
-                    <li>Logout</li>
+                    <li
+                        onClick={() => {
+                    dispatch(logoutUser())
+                    }}
+                    >Logout</li>
                 </ul>
             </nav>
         </header>
