@@ -29,7 +29,7 @@ export const Navbar = () => {
                     </div>
                     <div className={styles.navbar__logo}
                     >
-                        <span className={styles.navbar__logoText}>Street.Social</span>
+                        <span className={styles.navbar__logoText}>Social.Street</span>
                     </div>
                 </label>
                 <ul className={styles.navbar__menu}>
