@@ -33,6 +33,23 @@
   border-radius: 50%;
 }
 
+.editProfile__profileImage {
+  position: relative;
+}
+
+.editProfile__profilePicTxt{
+  position: absolute;
+  font-size: 0.8rem;
+  font-weight: 700;
+  top: 15px;
+  left: 7px;
+  color: wheat;
+}
+
+.editProfile__image:hover {
+  opacity: 0.5;
+}
+
 .editProfile__Btn {
   border-radius: 100px;
 }
@@ -73,13 +90,6 @@
 }
 
 @media only screen and (max-width: 992px) {
-  .editProfile {
-    display: flex;
-    padding: 0 0.75rem;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    margin-bottom: 1rem;
-    flex-direction: column;
-  }
 
   .editProfile__editItem {
     text-align: left;
@@ -92,56 +102,11 @@
   }
 
   .editProfile__editItemName {
-    /* width: 20%; */
-    /* width: 100%; */
     display: flex;
     margin-bottom: 0.8rem;
   }
 
   .editProfile__editItemChange {
     width: 100%;
-    display: flex;
-    justify-content: left;
-    align-items: center;
-  }
-
-  .editProfile__image {
-    height: 3rem;
-    width: 3rem;
-    border-radius: 50%;
-  }
-
-  .editProfile__Btn {
-    border-radius: 100px;
-  }
-
-  .editProfileInput {
-    display: block;
-    margin: 0.5rem 0;
-    border-width: 0 0 1px;
-    border-bottom-color: rgb(222, 222, 222);
-    width: 15rem;
-  }
-
-  .editProfile__textarea {
-    /* font-size: 1.25rem; */
-    width: 15rem;
-    font-family: inherit;
-    padding-bottom: 2px;
-    padding-top: 2px;
-    resize: none;
-    overflow: hidden;
-    border: none;
-    border-bottom: 1px solid #dfdcdc;
-    overflow-y: auto;
-  }
-
-  .editProfile__textarea:focus {
-    outline: none;
-  }
-
-  .editProfileInput:focus {
-    outline: none;
-    border-bottom-color: black;
   }
 }

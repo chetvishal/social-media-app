@@ -1,7 +1,4 @@
-import { ProfileCard } from '../ProfileCard/ProfileCard'
-import styles from './Following.module.css'
-import { Link, Chat, Retweet, Location } from '../../../Assets/Svg/index';
-import { useNavigate, useParams } from 'react-router';
+import { useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getUserData } from '../profileSlice';
@@ -16,8 +13,7 @@ export const Following = () => {
     useEffect(() => {
         (
             async () => {
-                if (status === "idle" || userProfile.username !== username && status !== "error") {
-                    console.log('useEffect if ran');
+                if ((status === "idle" || userProfile.username !== username) && status !== "error") {
                     await dispatch(getUserData({ username, token }));
                 }
             }

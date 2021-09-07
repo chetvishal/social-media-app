@@ -1,8 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import styles from './navbar.module.css';
-// import '../CSS/badge.css';
-import { Hamburger, Tv, Logout } from '../../Assets/Svg/index';
-import { Link, useNavigate } from 'react-router-dom';
+import { Hamburger,} from '../../Assets/Svg/index';
+import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 export const Navbar = () => {
@@ -10,8 +9,6 @@ export const Navbar = () => {
     const { username } = useSelector(state => state.auth)
 
     const check = useRef(null);
-
-    // const navigate = useNavigate()
 
     const handleCheck = () => check.current.checked = false;
 

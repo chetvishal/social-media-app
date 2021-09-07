@@ -1,3 +1,3 @@
 export const apiEndPoint = () => {
-    return `http://localhost:8000`
+    return `https://social-street-api.herokuapp.com`
 }

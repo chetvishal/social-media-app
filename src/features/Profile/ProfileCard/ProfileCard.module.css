@@ -50,6 +50,9 @@
   align-items: center;
   cursor: pointer;
 }
+.profile__actionItem:nth-child(2) {
+  margin-left: 1rem;
+}
 
 @media only screen and (max-width: 992px) {
   .profile__statsAndEditProfile {
@@ -57,6 +60,13 @@
   }
   .profile__Btn {
     margin-top: 1rem;
+  }
+  .profile__actionBar {
+    flex-direction: column;
+  }
+  .profile__actionItem:nth-child(2) {
+    margin-left: 0;
+    margin-top: 0.5rem;
   }
 }
 

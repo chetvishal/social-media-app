@@ -11,12 +11,10 @@ export const loginUserWithCredentials = createAsyncThunk(
         try {
 
             const login = await loginService(username, password)
-            console.log("login erroor", login)
 
             if (login.data.success) {
 
                 const { accessToken, userId, username: user_name, name } = login.data
-                console.log("login result", accessToken, userId, user_name, name)
                 return { accessToken, userId, user_name, name }
             }
             throw new Error(login.data.message);
@@ -31,7 +29,6 @@ export const createNewAccount = createAsyncThunk(
     async ({ username, password, name, email }) => {
         try {
             const login = await signupService(username, password, name, email)
-            console.log("login erroor", login)
 
             if (login.data.success) {
                 // alert("successfully created account")
@@ -55,7 +52,6 @@ export const initializeUser = createAsyncThunk(
             })
             return { userData: response.data.user, posts: response.data.posts }
         } catch (error) {
-            console.log("error from getUser: ", error.response)
             throw new Error(error.response.data.message)
             // return error.response.data
         }
@@ -112,11 +108,9 @@ export const authSlice = createSlice({
             state.error = null;
         },
         followUser_auth: (state, action) => {
-            // console.log("action followUser: ", action, state.user.following)
             state?.user?.following.push(action.payload)
         },
         unfollowUser_auth: (state, action) => {
-            console.log("action unfollowUser: ", action, "array: ", state.user)
             state.user.following = state.user.following.filter(item => item._id !== action.payload._id)
         },
     },
@@ -125,8 +119,7 @@ export const authSlice = createSlice({
             state.status = "loading";
         },
         [loginUserWithCredentials.fulfilled]: (state, action) => {
-            console.log("after fulfilled", action.payload)
-            const { accessToken, userId, user_name, name } = action.payload;
+            const { accessToken, userId, user_name } = action.payload;
             state.userToken = accessToken;
             state.userId = userId;
             state.isLoggedIn = true;
@@ -141,7 +134,6 @@ export const authSlice = createSlice({
             state.status = "fulfilled";
         },
         [loginUserWithCredentials.rejected]: (state, action) => {
-            console.log("error here", action.error.message);
             state.status = "error";
             state.isLoggedIn = false;
             state.error = action.error.message;
@@ -154,7 +146,6 @@ export const authSlice = createSlice({
             state.status = "fulfilled";
         },
         [initializeUser.rejected]: (state, action) => {
-            console.log("error here", action.error.message);
             state.status = "error";
             state.error = action.error.message;
         },
@@ -166,7 +157,6 @@ export const authSlice = createSlice({
             state.status = "fulfilled";
         },
         [createNewAccount.rejected]: (state, action) => {
-            // console.log("error here", action.error.message);
             state.status = "error";
             state.error = action.error.message;
         },

@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { FollowerCard } from '../../Profile/Followers/Followers';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserSearchResult } from '../searchSlice';
-import { useToken } from '../../../Services/useToken';
 
 export const SearchPg = () => {
 
@@ -12,7 +11,6 @@ export const SearchPg = () => {
     const { userToken: token } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
-    const gettoken = useToken()
 
     function ExecuteSearch() {
         dispatch(getUserSearchResult({ searchQuery, token }))
@@ -24,6 +22,7 @@ export const SearchPg = () => {
             dispatch(getUserSearchResult({ searchQuery, token }))
             // gettoken(token => dispatch(getUserSearchResult({searchQuery: "" , token })))
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 

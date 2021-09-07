@@ -1,4 +1,3 @@
-import styles from './Feed.module.css';
 import { PostCard, Loader } from '../../../Components';
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from 'react';
@@ -8,7 +7,6 @@ import { checkLikedPost } from '../../../Services/PostServices';
 export const HomeFeed = () => {
 
     const { feed, status, error } = useSelector((state) => {
-        console.log("state.feed: ", state.feed);
         return state.feed;
     });
 
@@ -21,10 +19,10 @@ export const HomeFeed = () => {
     useEffect(() => {
         (
             async function () {
-                console.log("token before dispatch: ", token)
                 await dispatch(loadFeed({ userId, token }))
             }
         )()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -44,6 +42,7 @@ export const HomeFeed = () => {
                                 likesQty={item?.likes.length}
                                 likesArr={item?.likes}
                                 avatarUrl={item?.userId?.avatarUrl}
+                                key={item?._id}
                             />
                         })
             }

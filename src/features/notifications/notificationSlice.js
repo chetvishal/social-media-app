@@ -14,7 +14,6 @@ export const getNotifications = createAsyncThunk(
                     'Authorization': token
                 }
             })
-            console.log("response after getting notification: ", response, "userId", userId)
             return { notifications: response.data.notifications }
         } catch (error) {
             console.log("error from getNotifications: ", error.response)
@@ -38,7 +37,6 @@ export const notificationSlice = createSlice({
             state.status = "loading";
         },
         [getNotifications.fulfilled]: (state, action) => {
-            console.log("action payload getNotifications: ", action)
             state.notifications = action.payload.notifications
 
             state.status = "fulfilled";
@@ -50,5 +48,4 @@ export const notificationSlice = createSlice({
         },
     }
 });
-export const { } = notificationSlice.actions;
 export default notificationSlice.reducer;

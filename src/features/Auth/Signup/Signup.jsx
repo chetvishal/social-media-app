@@ -7,7 +7,6 @@ import { createNewAccount, loginUserWithCredentials } from '../authSlice';
 export const Signup = () => {
 
     const [FormData, setFormData] = useState({ email: "", username: "", password: "", name: "" })
-    const [errorText, setErrorText] = useState("")
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const { error, isLoggedIn } = useSelector(state => state.auth)
@@ -35,7 +34,6 @@ export const Signup = () => {
 
     const handleSignupSubmit = async (e) => {
         e.preventDefault()
-        console.log("handle Signup");
         await dispatch(createNewAccount({
             username: FormData.username,
             password: FormData.password,

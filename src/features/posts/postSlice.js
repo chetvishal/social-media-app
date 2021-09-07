@@ -20,7 +20,6 @@ export const getPost = createAsyncThunk("posts/getPost", async ({ postId, token 
 
 export const likeHandler = createAsyncThunk("posts/likeHandler", async ({ postId, userId, like, token }) => {
   try {
-    console.log("like handler: ", postId, userId, like)
     const response = await axios.post(`${apiEndPoint()}/post/${postId}/likes`, {
       userId,
       like,
@@ -82,7 +81,6 @@ export const postSlice = createSlice({
     },
     addLike__Post: (state, action) => {
       if (state.currentPost._id !== undefined) {
-        console.log("action: ", action.payload.userId)
         state.currentPost.likes.push(action.payload.userId)
       }
     },
@@ -107,7 +105,6 @@ export const postSlice = createSlice({
       state.status = "loading";
     },
     [likeHandler.fulfilled]: (state, action) => {
-      console.log("likehandler : ", action)
 
       state.status = "fulfilled";
     },
@@ -118,7 +115,6 @@ export const postSlice = createSlice({
       state.status = "loading";
     },
     [commentHandler.fulfilled]: (state, action) => {
-      console.log("commentHandler : ", action)
       state.currentPost.comments = action.payload.response.data.savedItem.comments
       state.status = "fulfilled";
     },

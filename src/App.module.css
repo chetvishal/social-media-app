@@ -35,5 +35,6 @@
   .App__content {
     padding: 0 1rem;
     margin: 0 auto;
+    min-width: none;
   }
 }

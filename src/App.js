@@ -14,11 +14,11 @@ function App() {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log("app.js runs", username)
     if (isLoggedIn) {
       dispatch(initializeUser({ username, token: userToken }))
       dispatch(getNotifications({ userId, token: userToken }))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

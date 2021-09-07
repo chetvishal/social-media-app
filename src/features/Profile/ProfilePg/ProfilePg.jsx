@@ -11,15 +11,13 @@ export const ProfilePg = () => {
 
     const dispatch = useDispatch()
     const { status, userProfile, error, userPosts } = useSelector(state => state.profile)
-    const { userId, user, userToken:token } = useSelector(state => state.auth)
+    const { userId, user, userToken: token } = useSelector(state => state.auth)
     const { username } = useParams()
 
     useEffect(() => {
         (async () => {
 
-            console.log("status in postPage useEffect: ", status, userProfile, username)
-            if (status === "idle" || userProfile.username !== username && status !== "error") {
-                console.log('useEffect if ran');
+            if ((status === "idle" || userProfile.username) !== username && status !== "error") {
                 await dispatch(getUserData({ username, token }));
             }
         })();
@@ -50,7 +48,6 @@ export const ProfilePg = () => {
                     userPosts.length === 0 ?
                         <div>No posts</div> :
                         userPosts.map(post => {
-                            console.log("while mapping userPosts: ", post?.likes, userProfile?._id)
                             return <PostCard
                                 content={post.content}
                                 name={post.userId.name}
@@ -59,6 +56,7 @@ export const ProfilePg = () => {
                                 likes={checkLikedPost(post.likes, userId)}
                                 likesArr={post?.likes}
                                 avatarUrl={post?.userId?.avatarUrl}
+                                key={post?._id}
                             />
                         })
                 }

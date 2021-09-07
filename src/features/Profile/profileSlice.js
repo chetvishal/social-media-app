@@ -1,14 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { extend } from "lodash";
 import { apiEndPoint } from "../../Services/Api";
 
 export const getUserData = createAsyncThunk(
     "profile/getUserData",
     async ({ username, token }) => {
         try {
-            console.log("its running apiEndPoint", apiEndPoint())
             const response = await axios.get(`${apiEndPoint()}/user/${username}`, {
                 headers: {
                     'Authorization': token
@@ -39,7 +37,6 @@ export const updateUserData = createAsyncThunk(
                     }
                 }
             )
-            console.log("response after updating the profile: ", name, location, website, bio, userId)
             return { userData: response.data.user }
         } catch (error) {
             console.log("error from getUser: ", error.message)
@@ -63,7 +60,6 @@ export const followUser = createAsyncThunk(
                 }
 
             )
-            console.log("repsonse after following user: ", response)
             return { userData: response.data.userData }
         } catch (error) {
             console.log("error from getUser: ", error.response)
@@ -86,7 +82,6 @@ export const unFollowUser = createAsyncThunk(
                         'Authorization': token
                     }
                 })
-            console.log("repsonse after unfollowing user: ", response)
             return { userData: response.data.userData }
         } catch (error) {
             console.log("error from unfollow: ", error.response)
@@ -106,41 +101,13 @@ export const uploadProfilePic = createAsyncThunk("profile/uploadProfilePic",
                     'Authorization': token
                 }
             })
-            console.log("repsonse after uploading pic: ", uploadImageResponse)
             return uploadImageResponse
-
-            // fetch('/api/upload', {
-            //     method: 'POST',
-            //     body: JSON.stringify({ data: base64EncodedImage }),
-            //     headers: { 'Content-Type': 'application/json' },
-            // });
-
         } catch (error) {
             console.error(error);
             throw new Error(error.response.data.message)
         }
     }
 );
-
-
-
-
-
-// async (base64EncodedImage) => {
-//     try {
-//         await fetch('/api/upload', {
-//             method: 'POST',
-//             body: JSON.stringify({ data: base64EncodedImage }),
-//             headers: { 'Content-Type': 'application/json' },
-//         });
-//         setFileInputState('');
-//         setPreviewSource('');
-//         setSuccessMsg('Image uploaded successfully');
-//     } catch (err) {
-//         console.error(err);
-//         setErrMsg('Something went wrong!');
-//     }
-// };
 
 
 export const profileSlice = createSlice({
@@ -179,7 +146,6 @@ export const profileSlice = createSlice({
             state.status = "loading";
         },
         [getUserData.fulfilled]: (state, action) => {
-            console.log("action payload getUserData: ", action)
             state.userProfile = action.payload.userData
             state.userPosts = action.payload.posts
 
@@ -229,7 +195,6 @@ export const profileSlice = createSlice({
             state.status = "loading";
         },
         [uploadProfilePic.fulfilled]: (state, action) => {
-            console.log("successfully uploaded profile picture")
             state.status = "fulfilled";
         },
         [uploadProfilePic.rejected]: (state, action) => {

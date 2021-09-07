@@ -36,7 +36,6 @@ export const searchSlice = createSlice({
             state.status = "loading";
         },
         [getUserSearchResult.fulfilled]: (state, action) => {
-            console.log("action payload getUserSearchResult: ", action)
             state.searchResult = action.payload.searchResult
 
             state.status = "fulfilled";
@@ -48,5 +47,4 @@ export const searchSlice = createSlice({
         },
     }
 });
-export const { } = searchSlice.actions;
 export default searchSlice.reducer;

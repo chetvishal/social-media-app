@@ -1,12 +1,12 @@
 import styles from './Sidebar.module.css';
-import { Home2 as HomeIcon, Bell, User, User2, MagnifyingGlass, Logout } from '../../Assets/Svg/index';
+import { Home2 as HomeIcon, Bell, User, MagnifyingGlass, Logout } from '../../Assets/Svg/index';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../features/Auth/authSlice';
 
 export const Sidebar = () => {
 
-    const { userId, username, isLoggedIn } = useSelector(state => state.auth)
+    const { username } = useSelector(state => state.auth)
     const dispatch = useDispatch();
 
     return (
@@ -48,7 +48,6 @@ export const Sidebar = () => {
                     </div>
                 </Link>
                 <div className={styles.home__sidebarItem} onClick={() => {
-                    console.log("onClick clicked: ")
                     dispatch(logoutUser())}}>
                     <Logout
                         className={styles.home__sidebarIcon}

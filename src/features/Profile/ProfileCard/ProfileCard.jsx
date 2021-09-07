@@ -20,11 +20,10 @@ export const ProfileCard = ({
 
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const { username: username_auth, userId: userId_auth, user, userToken: token } = useSelector(state => state.auth)
+    const { username: username_auth, userId: userId_auth, userToken: token } = useSelector(state => state.auth)
     const { username: username_Params } = useParams()
     const handleFollowClick = (e) => {
 
-        // isFollowing ? console.log("feature not available"):  dispatch(followUser({ userId: userId_auth, toFollowUserId: userId }))
         if (!isFollowing) {
             dispatch(followUser({ userId: userId_auth, toFollowUserId: userId, token }))
             dispatch(followUser_auth({ _id: userId, name, username, avatarUrl }))
@@ -46,9 +45,7 @@ export const ProfileCard = ({
                     className={styles.profile__image}
                 />
             </div>
-            {/* <button onClick={() => console.log("profile data", bio,
-                "user", user,)}>click me</button> */}
-            <div className={styles.profile__content} style={{ border: "1px solid black;" }}>
+            <div className={styles.profile__content} >
                 <div className={styles.profile__contentHeading}>
                     <span style={{ fontSize: "1rem", fontWeight: "500" }}>{name} </span>
                     <span style={{ fontSize: "1rem", fontWeight: "300" }}>@{username}</span>
@@ -72,7 +69,7 @@ export const ProfileCard = ({
                     <div
                         className={styles.profile__actionItem}
                         style={{
-                            marginLeft: "1rem",
+                            // marginLeft: "1rem",
                             display: website === undefined || website === "" ? "none" : ""
                         }}>
                         <Link

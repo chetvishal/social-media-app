@@ -1,5 +1,4 @@
 import styles from './EditProfile.module.css';
-import { Link, Chat, Retweet, Location } from '../../../Assets/Svg/index';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,8 +9,10 @@ export const EditProfile = ({ text }) => {
     const navigate = useNavigate()
     const { userId, user, username, userToken: token } = useSelector(state => state.auth)
     const [pic, setPic] = useState(null);
-    const [profilePic, setProfilePic] = useState("https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png");
-    console.log("userdata updatProfile: ", user)
+    const [profilePic, setProfilePic] = useState(user?.avatarUrl === undefined ?
+        "https://abs.twimg.com/sticky/default_profile_images/default_profile_400x400.png" :
+        user?.avatarUrl
+    );
     const [FormData, setFormData] = useState({
         name: user.name,
         location: user?.location === undefined ? "" : user?.location,
@@ -32,14 +33,16 @@ export const EditProfile = ({ text }) => {
         };
     };
 
-    const handleProfilePicChange = (e) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(pic);
-        reader.onloadend = () => {
-            setProfilePic(reader.result)
-            console.log(reader.result)
-            dispatch(uploadProfilePic({ userId, encodedImage: reader.result, token }))
-        };
+    const handleChangeSubmit = (e) => {
+        if (pic !== null) {
+            const reader = new FileReader();
+            reader.readAsDataURL(pic);
+            reader.onloadend = () => {
+                setProfilePic(reader.result)
+                dispatch(uploadProfilePic({ userId, encodedImage: reader.result, token }))
+            };
+        } else
+            alert("please select a profile pic")
     }
 
     const formChangeHandler = (e) => {
@@ -71,10 +74,13 @@ export const EditProfile = ({ text }) => {
                 </div>
                 <div className={styles.editProfile__editItemChange}>
                     <div className={styles.editProfile__changeProfilePic}>
-                        <label for="fileInput"><img
-                            src={profilePic} alt="profile pic"
-                            className={styles.editProfile__image}
-                        /></label>
+                        <label for="fileInput" className={styles.editProfile__profileImage}>
+                            <img
+                                src={profilePic} alt="profile pic"
+                                className={styles.editProfile__image}
+                            />
+                            <span className={styles.editProfile__profilePicTxt}>Select</span>
+                        </label>
                         <input
                             id="fileInput"
                             type="file"
@@ -85,8 +91,8 @@ export const EditProfile = ({ text }) => {
                             style={{ display: "none" }}
                         />
                         <span
-                            style={{ marginLeft: "1rem" }}
-                            onClick={handleProfilePicChange}
+                            style={{ marginLeft: "1rem", cursor: "pointer" }}
+                            onClick={handleChangeSubmit}
                         > Change</span>
                     </div>
                 </div>
@@ -177,7 +183,6 @@ export const EditProfile = ({ text }) => {
                 <div className={styles.editProfile__editItemChange}>
                     <button
                         onClick={() => {
-                            console.log("form data: ", FormData)
                             FormData.name !== "" ?
                                 dispatch(updateUserData({ ...FormData, userId, token }))
                                     .then(() => navigate(`/profile/${username}`))

@@ -6,7 +6,6 @@ import { useRef, useEffect } from "react";
 import { getPost } from '../postSlice';
 import { checkLikedPost } from '../../../Services/PostServices';
 import { commentHandler } from '../postSlice';
-import { useNavigate } from 'react-router-dom';
 
 export const PostPg = () => {
     const { currentPost, status } = useSelector((state) => {
@@ -18,10 +17,8 @@ export const PostPg = () => {
     const dispatch = useDispatch()
     const { postId } = useParams()
     const postTextBox = useRef(null);
-    const navigate = useNavigate()
 
     const commentBtnHandler = async () => {
-        console.log("commment button")
         dispatch(commentHandler({ userId, postId, content: postTextBox.current.value, token: userToken }))
     }
 
@@ -29,17 +26,15 @@ export const PostPg = () => {
         // fetch post data
         (async () => {
 
-            console.log("status in postPage useEffect: ", status, currentPost, postId)
             if (currentPost._id !== postId || status === "idle") {
-                console.log('useEffect if ran');
                 await dispatch(getPost({ postId, token: userToken }));
             }
         })();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     let postData = currentPost;
 
-    console.log("status in postPage before rendering page: ", status, "postDAta", postData)
     return status === "loading" || status === "idle" ?
         <div><Loader /></div>
         :

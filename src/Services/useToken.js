@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import axios from 'axios';
 import { useSelector } from "react-redux";
 
-export function useToken(callback) {
+export function useToken() {
 
     const { userToken } = useSelector(state => state.auth)
 

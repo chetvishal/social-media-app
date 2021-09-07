@@ -31,7 +31,6 @@ export const PostCard = ({ content, name, username, postId, likes, likesQty, lik
         }
     }
 
-    console.log("avatarUrl: ", avatarUrl)
     return (
         <div className={styles.postCard}>
             <div className={styles.postCard__imageContainer}>
@@ -44,7 +43,7 @@ export const PostCard = ({ content, name, username, postId, likes, likesQty, lik
                     className={styles.postCard__image}
                 />
             </div>
-            <div className={styles.postCard__content} style={{ border: "1px solid black;" }}>
+            <div className={styles.postCard__content}>
                 <div className={styles.postCard__contentHeading} onClick={() => navigate(`/profile/${username}`)}>
                     <span style={{ fontSize: "1rem", fontWeight: "500" }} className={styles.postCard__name}>{name} </span>
                     <span style={{ fontSize: "1rem", fontWeight: "300" }}>@{username}</span>

@@ -18,13 +18,12 @@ export const Notifications = () => {
                     <div><Loader /></div> :
                     state === "error" && !Array.isArray(notifications) ? <div>Error...</div> :
                         notifications.map(notification => {
-                            console.log("originUser: ", notification)
                             return <NotificationCard
                                 type={notification?.notificationType}
                                 name={notification?.originUser?.name}
                                 username={notification?.originUser?.username}
                                 postId={notification?.postId}
-                                avatarUrl={notification?.avatarUrl}
+                                avatarUrl={notification?.originUser?.avatarUrl}
                             />
                         })
             }

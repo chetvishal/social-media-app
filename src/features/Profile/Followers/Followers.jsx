@@ -1,4 +1,3 @@
-import { ProfileCard } from '../ProfileCard/ProfileCard';
 import styles from './Followers.module.css';
 import { useNavigate, useParams } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
@@ -42,8 +41,7 @@ export const Followers = () => {
     useEffect(() => {
         (
             async () => {
-                if (status === "idle" || userProfile.username !== username && status !== "error") {
-                    console.log('useEffect if ran');
+                if ((status === "idle" || userProfile.username !== username) && status !== "error") {
                     await dispatch(getUserData({ username, token }));
                 }
             }

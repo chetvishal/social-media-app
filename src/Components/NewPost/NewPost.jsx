@@ -35,7 +35,7 @@ export const NewPost = () => {
                     className={styles.newPost__image}
                 />
             </div>
-            <div className={styles.newPost__content} style={{ border: "1px solid black;" }}>
+            <div className={styles.newPost__content}>
                 <div style={{ paddingTop: "0.8rem" }}>
                     <textarea
                         placeholder="Whats happening?"

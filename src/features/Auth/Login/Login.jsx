@@ -1,37 +1,37 @@
 import styles from "./Login.module.css";
-// import { useAuthContext } from '../../Context/AuthContext';
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { loginUserWithCredentials, logout, initializeUser } from "../authSlice";
+import { loginUserWithCredentials, initializeUser } from "../authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getNotifications } from "../../notifications/notificationSlice";
-// import { useDataContext } from "../../Context/DataContext";
-// import { Tv } from '../../Assets/index';
 
 export const Login = () => {
 
     const dispatch = useDispatch();
     const {
-        status,
-        userToken,
-        userId,
-        username: user_name,
         isLoggedIn,
-        user,
         error
     } = useSelector((state) => state.auth);
-    const [errorText, setErrorText] = useState("");
-    const { state } = useLocation();
     const navigate = useNavigate()
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        console.log("its getting clicked")
         await dispatch(loginUserWithCredentials({ username, password }))
             .then(async (resp) => {
-                console.log("resp: login", resp)
+                if (resp.error === undefined) {
+                    await dispatch(getNotifications({ userId: resp.payload.userId, token: resp.payload.accessToken }))
+                    await dispatch(initializeUser({ username, token: resp.payload.accessToken }))
+                }else console.log("login error")
+
+            })
+    }
+
+    const loginAsGuest = async (e) => {
+        e.preventDefault();
+        await dispatch(loginUserWithCredentials({ username:"test4", password: "12345" }))
+            .then(async (resp) => {
                 if (resp.error === undefined) {
                     await dispatch(getNotifications({ userId: resp.payload.userId, token: resp.payload.accessToken }))
                     await dispatch(initializeUser({ username, token: resp.payload.accessToken }))
@@ -86,15 +86,12 @@ export const Login = () => {
                     <Link to="/signup" className="nostyle">
                         Don't have an account yet?
                     </Link>
-                    {/* <button
-                        onClick={() => console.log("state data: ", status,
-                            userToken,
-                            userId,
-                            user_name,
-                            isLoggedIn,
-                            user,
-                            error)}
-                    >click me</button> */}
+                    
+                </span>
+                <span className={`util-heading-small ${styles.signUpLink}`}
+                    onClick={loginAsGuest}
+                >
+                        Login as guest
                 </span>
             </div>
         </div >
