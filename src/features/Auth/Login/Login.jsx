@@ -59,7 +59,7 @@ export const Login = () => {
             <div className={styles.loginForm}>
                 <div className={styles.loginFormHeading}>
                     <div className={styles.login__logo}>
-                        <span className={styles.login__logoText}>Street.Social</span>
+                        <span className={styles.login__logoText}>Social.Street</span>
                     </div>
 
                     <span className="util-heading-medium" style={{ fontWeight: "500" }}>Sign in</span>
