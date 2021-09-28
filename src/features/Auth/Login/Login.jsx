@@ -23,29 +23,9 @@ export const Login = () => {
                 if (resp.error === undefined) {
                     await dispatch(getNotifications({ userId: resp.payload.userId, token: resp.payload.accessToken }))
                     await dispatch(initializeUser({ username, token: resp.payload.accessToken }))
-                }else console.log("login error")
+                } else console.log("login error")
 
             })
-    }
-
-    const loginAsGuest = async (e) => {
-        e.preventDefault();
-        await dispatch(loginUserWithCredentials({ username:"test4", password: "12345" }))
-            .then(async (resp) => {
-                if (resp.error === undefined) {
-                    await dispatch(getNotifications({ userId: resp.payload.userId, token: resp.payload.accessToken }))
-                    await dispatch(initializeUser({ username, token: resp.payload.accessToken }))
-                }else console.log("login error")
-
-            })
-
-        // .then((resp) => {
-        //     updateServer('LOGIN', resp)
-        //     navigate(state?.from && state?.from !== "/video/:id" ? state.from : '/login')
-        // }).catch((err) => {
-        //     setErrorText(err.message)
-        // })
-
     }
 
     useEffect(() => {
@@ -67,9 +47,9 @@ export const Login = () => {
                 </div>
                 <form onSubmit={handleLogin}>
                     <span className={`util-heading-small ${styles.loginInputText}`}>Username</span>
-                    <input type="text" className={styles.loginInput} onChange={e => setUsername(e.target.value)} />
+                    <input type="text" className={styles.loginInput} onChange={e => setUsername(e.target.value)} value={username}/>
                     <span className={`util-heading-small ${styles.loginInputText}`}>Password</span>
-                    <input type="password" className={styles.loginInput} onChange={e => setPassword(e.target.value)} />
+                    <input type="password" className={styles.loginInput} onChange={e => setPassword(e.target.value)} value={password}/>
                     <button
                         className={`submit-button ${styles.login__Btn}`}
                         style={{ backgroundColor: "black" }}
@@ -86,12 +66,15 @@ export const Login = () => {
                     <Link to="/signup" className="nostyle">
                         Don't have an account yet?
                     </Link>
-                    
+
                 </span>
                 <span className={`util-heading-small ${styles.signUpLink}`}
-                    onClick={loginAsGuest}
+                    onClick={() => {
+                        setUsername("test4")
+                        setPassword("12345")
+                    }}
                 >
-                        Login as guest
+                    Use guest credentials
                 </span>
             </div>
         </div >
