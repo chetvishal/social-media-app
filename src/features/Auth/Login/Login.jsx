@@ -28,6 +28,18 @@ export const Login = () => {
             })
     }
 
+    const guestLogin = async (e) => {
+        e.preventDefault();
+        await dispatch(loginUserWithCredentials({ username: "test4", password: "12345" }))
+            .then(async (resp) => {
+                if (resp.error === undefined) {
+                    await dispatch(getNotifications({ userId: resp.payload.userId, token: resp.payload.accessToken }))
+                    await dispatch(initializeUser({ username: "test4", token: resp.payload.accessToken }))
+                } else console.log("login error")
+
+            })
+    }
+
     useEffect(() => {
         if (isLoggedIn) {
             navigate('/')
@@ -47,9 +59,21 @@ export const Login = () => {
                 </div>
                 <form onSubmit={handleLogin}>
                     <span className={`util-heading-small ${styles.loginInputText}`}>Username</span>
-                    <input type="text" className={styles.loginInput} onChange={e => setUsername(e.target.value)} value={username}/>
+                    <input
+                        type="text"
+                        className={styles.loginInput}
+                        onChange={e => setUsername(e.target.value)}
+                        value={username}
+                        autocomplete="on"
+                    />
                     <span className={`util-heading-small ${styles.loginInputText}`}>Password</span>
-                    <input type="password" className={styles.loginInput} onChange={e => setPassword(e.target.value)} value={password}/>
+                    <input
+                        type="password"
+                        className={styles.loginInput}
+                        onChange={e => setPassword(e.target.value)}
+                        value={password}
+                        autocomplete="on"
+                    />
                     <button
                         className={`submit-button ${styles.login__Btn}`}
                         style={{ backgroundColor: "black" }}
@@ -69,9 +93,10 @@ export const Login = () => {
 
                 </span>
                 <span className={`util-heading-small ${styles.signUpLink}`}
-                    onClick={() => {
+                    onClick={(e) => {
                         setUsername("test4")
                         setPassword("12345")
+                        guestLogin(e)
                     }}
                 >
                     Use guest credentials
