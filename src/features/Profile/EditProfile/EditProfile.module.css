@@ -44,11 +44,12 @@
   top: 15px;
   left: 7px;
   color: wheat;
+  cursor: pointer;
 }
 
-.editProfile__image:hover {
+/* .editProfile__image:hover {
   opacity: 0.5;
-}
+} */
 
 .editProfile__Btn {
   border-radius: 100px;

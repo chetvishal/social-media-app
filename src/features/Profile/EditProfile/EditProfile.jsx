@@ -91,7 +91,7 @@ export const EditProfile = ({ text }) => {
                             style={{ display: "none" }}
                         />
                         <span
-                            style={{ marginLeft: "1rem", cursor: "pointer" }}
+                            style={{ marginLeft: "1rem", cursor: "pointer", display: pic !== null ? "" : "none" }}
                             onClick={handleChangeSubmit}
                         > Change</span>
                     </div>
