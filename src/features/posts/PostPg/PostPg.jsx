@@ -47,6 +47,14 @@ export const PostPg = () => {
                 likesArr={postData?.likes}
                 avatarUrl={postData?.userId?.avatarUrl}
             />
+
+            <div style={{ 
+                // display: postData?.comments?.length !== 0 ? "flex" : "none", 
+                display: "flex",
+                padding: "6px 22px" }}>
+                <h2>Comments</h2>
+            </div>
+            {/* NEW COMMENT COMPONENT */}
             <div className={styles.post__newComment}>
                 <div className={styles.post__newComment__imageContainer}>
                     <img
@@ -83,11 +91,7 @@ export const PostPg = () => {
                     </div>
                 </div>
             </div>
-
-            <div style={{ display: postData?.comments?.length !== 0 ? "flex" : "none", padding: "6px 22px" }}>
-                <h2>Comments</h2>
-            </div>
-            {/* PostCard */}
+            {/* PostCardS */}
             {
                 postData.comments.map(item => {
                     return <div className={styles.post__comment}>
@@ -115,6 +119,7 @@ export const PostPg = () => {
                     </div>
                 })
             }
+            
         </div>
 
 
