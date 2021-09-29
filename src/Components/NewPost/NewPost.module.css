@@ -1,7 +1,8 @@
 .newPost {
   display: flex;
-  /* border: 1px solid black; */
   padding: 0 0.75rem;
+  border: 1px solid rgb(239, 243, 244);
+  border-bottom: none;
 }
 
 .newPost__imageContainer {
