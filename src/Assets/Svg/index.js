@@ -14,3 +14,5 @@ export { ReactComponent as MagnifyingGlass } from './magnifying-glass.svg';
 export { ReactComponent as Location } from './location.svg';
 export { ReactComponent as Link } from './link.svg';
 export { ReactComponent as Logout } from './logout.svg';
+export { ReactComponent as FeatherPen } from './feather-pen2.svg';
+export { ReactComponent as Cross } from './close.svg';

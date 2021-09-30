@@ -1,13 +1,37 @@
 import styles from './Sidebar.module.css';
-import { Home2 as HomeIcon, Bell, User, MagnifyingGlass, Logout } from '../../Assets/Svg/index';
+import { Home2 as HomeIcon, Bell, User, MagnifyingGlass, Logout, FeatherPen, Cross } from '../../Assets/Svg/index';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../features/Auth/authSlice';
+import { NewPost } from '../index';
+import { useState } from 'react';
+
+const CreatePost = ({ visibility, toggleVisibility }) => {
+    return (
+        <div
+            className={styles.createPost}
+            style={{ display: visibility ? "" : "none" }}
+        >
+            <div className={styles.createPost__newPost}>
+                <div><Cross
+                    // className={styles.home__sidebarIcon}
+                    style={{ width: "1.65rem", height: "1.65rem", padding: "0.3rem 22px", cursor: "pointer" }}
+                    onClick={toggleVisibility}
+                /></div>
+                <NewPost toggleView={toggleVisibility} />
+            </div>
+        </div>
+    )
+}
 
 export const Sidebar = () => {
 
     const { username } = useSelector(state => state.auth)
     const dispatch = useDispatch();
+    const [newPostVisibility, setNewPostVisibility] = useState(false)
+    const toggleVisibility = () => {
+        setNewPostVisibility(newPostVisibility => !newPostVisibility)
+    }
 
     return (
         <div className={styles.home__sidebar}>
@@ -47,14 +71,24 @@ export const Sidebar = () => {
                         <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Profile</span>
                     </div>
                 </Link>
+                {/* <Link className="nostyle" to={`/`}> */}
+                <div className={styles.home__sidebarItem} onClick={toggleVisibility}>
+                    <FeatherPen
+                        className={styles.home__sidebarIcon}
+                    />
+                    <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Post</span>
+                </div>
+                {/* </Link> */}
                 <div className={styles.home__sidebarItem} onClick={() => {
-                    dispatch(logoutUser())}}>
+                    dispatch(logoutUser())
+                }}>
                     <Logout
                         className={styles.home__sidebarIcon}
                     />
                     <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Logout</span>
                 </div>
             </div>
+            <CreatePost visibility={newPostVisibility} toggleVisibility={toggleVisibility} />
         </div>
     )
 }

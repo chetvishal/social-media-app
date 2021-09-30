@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewPost } from '../../features/Feed/feedSlice';
 
-export const NewPost = () => {
+export const NewPost = ({ toggleView }) => {
     const newPostTextBox = useRef(null);
     const { userId, username, userToken: token, user } = useSelector(state => state.auth)
     const dispatch = useDispatch();
@@ -56,7 +56,12 @@ export const NewPost = () => {
                     padding: "1rem 0"
                 }}>
                     <button
-                        onClick={newPostHandler}
+                        onClick={() => {
+                            newPostHandler()
+                            if (typeof toggleView === 'function') {
+                                toggleView()
+                            }
+                        }}
                         className={`submit-button`}>POST</button>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import styles from './navbar.module.css';
-import { Hamburger,} from '../../Assets/Svg/index';
+import { Hamburger, } from '../../Assets/Svg/index';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../features/Auth/authSlice';
@@ -39,10 +39,11 @@ export const Navbar = () => {
                     <li><Link className="nostyle" to="/search" onClick={handleCheck}>Search</Link></li>
                     <li><Link className="nostyle" to="/notifications" onClick={handleCheck}>Notifications</Link></li>
                     <li><Link className="nostyle" to={`/profile/${username}`} onClick={handleCheck}>Profile</Link></li>
+                    <li><Link className="nostyle" to={`/`} onClick={handleCheck}>Post</Link></li>
                     <li
                         onClick={() => {
-                    dispatch(logoutUser())
-                    }}
+                            dispatch(logoutUser())
+                        }}
                     >Logout</li>
                 </ul>
             </nav>
