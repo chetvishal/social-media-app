@@ -15,7 +15,7 @@ const CreatePost = ({ visibility, toggleVisibility }) => {
             <div className={styles.createPost__newPost}>
                 <div><Cross
                     // className={styles.home__sidebarIcon}
-                    style={{ width: "1.65rem", height: "1.65rem", padding: "0.3rem 22px", cursor: "pointer" }}
+                    style={{ width: "1.65rem", height: "1.65rem", padding: "0.3rem 22px", cursor: "pointer", display: "flex" }}
                     onClick={toggleVisibility}
                 /></div>
                 <NewPost toggleView={toggleVisibility} />
