@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Home, Notifications, ProfilePg, EditProfile, Followers, Following, PostPg, Login, SearchPg, Signup } from './features/index'
 import { Navbar, Sidebar, NoRoute } from './Components/index';
 import { Route, Routes } from 'react-router-dom';
@@ -12,6 +12,12 @@ function App() {
 
   const { username, userId, isLoggedIn, userToken } = useSelector(state => state.auth)
   const dispatch = useDispatch()
+  
+  const [hideMenu, setHideMenu] = useState(false)
+
+  const toggleHideMenu = () => {
+    setHideMenu(() => true)
+  }
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -26,12 +32,12 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
       <div className="App">
-        <Navbar />
-        <div className={styles.App__body}>
+        <Navbar setHideMenu={setHideMenu} hideMenu={hideMenu}/>
+        <div className={styles.App__body} onClick={toggleHideMenu}>
           <div className={styles.App__sidebar}>
             <Sidebar />
           </div>
-          <div className={styles.App__content}>
+          <div className={styles.App__content} >
             <Routes>
               <PrivateRoute path="/" element={<Home />} />
               <PrivateRoute path="/notifications" element={<Notifications />} />

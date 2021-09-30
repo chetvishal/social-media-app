@@ -1,11 +1,11 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import styles from './navbar.module.css';
 import { Hamburger, } from '../../Assets/Svg/index';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../features/Auth/authSlice';
 
-export const Navbar = () => {
+export const Navbar = ({ hideMenu, setHideMenu }) => {
 
     const { username } = useSelector(state => state.auth)
 
@@ -13,6 +13,12 @@ export const Navbar = () => {
     const dispatch = useDispatch();
 
     const handleCheck = () => check.current.checked = false;
+
+    useEffect(() => {
+        if (hideMenu)
+            handleCheck()
+        setHideMenu(() => false)
+    }, [hideMenu, setHideMenu])
 
     return (
 
