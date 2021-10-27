@@ -109,6 +109,23 @@ export const uploadProfilePic = createAsyncThunk("profile/uploadProfilePic",
     }
 );
 
+export const getUserPosts = createAsyncThunk("profile/getUserPosts",
+    async ({ token, userId }) => {
+        try {
+            const postsResponse = await axios.get(`${apiEndPoint()}/post/getposts/${userId}`, {
+
+                headers: {
+                    'Authorization': token
+                }
+            })
+            return { posts: postsResponse.data.posts }
+        } catch (error) {
+            console.error(error);
+            throw new Error(error.response.data.message)
+        }
+    }
+);
+
 
 export const profileSlice = createSlice({
     name: 'profile',
@@ -199,7 +216,19 @@ export const profileSlice = createSlice({
         },
         [uploadProfilePic.rejected]: (state, action) => {
             state.status = "error";
-        }
+        },
+        [getUserPosts.pending]: (state, action) => {
+            state.status = "loading";
+        },
+        [getUserPosts.fulfilled]: (state, action) => {
+            state.userPosts = action.payload.posts;
+
+            state.status = "fulfilled";
+        },
+        [getUserPosts.rejected]: (state, action) => {
+            state.status = "error";
+            state.error = action.error.message;
+        },
     }
 });
 export const { addLike__Profile, removeLike__Profile } = profileSlice.actions;

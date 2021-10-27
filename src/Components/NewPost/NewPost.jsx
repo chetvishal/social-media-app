@@ -2,6 +2,7 @@ import styles from './NewPost.module.css';
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createNewPost } from '../../features/Feed/feedSlice';
+import { getUserPosts } from '../../features/Profile/profileSlice';
 
 export const NewPost = ({ toggleView }) => {
     const newPostTextBox = useRef(null);
@@ -20,6 +21,7 @@ export const NewPost = ({ toggleView }) => {
             content: newPostTextBox.current.value,
             token
         }))
+            .then(() => dispatch(getUserPosts({ token, userId })))
         newPostTextBox.current.value = ""
     }
 
