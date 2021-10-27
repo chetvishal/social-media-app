@@ -2,7 +2,8 @@ import styles from './EditProfile.module.css';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { updateUserData, uploadProfilePic } from '../profileSlice';
+import { updateUserData, uploadProfilePic, getUserData } from '../profileSlice';
+import { initializeUser } from '../../Auth/authSlice';
 
 export const EditProfile = ({ text }) => {
 
@@ -176,7 +177,7 @@ export const EditProfile = ({ text }) => {
                     ></textarea>
                 </div>
             </div>
-            <div className={styles.editProfile__editItem}>
+            <div className={styles.editProfile__editItem} style={{ marginTop: "0.5rem" }}>
                 <div className={styles.editProfile__editItemName}>
 
                 </div>
@@ -185,13 +186,23 @@ export const EditProfile = ({ text }) => {
                         onClick={() => {
                             FormData.name !== "" ?
                                 dispatch(updateUserData({ ...FormData, userId, token }))
-                                    .then(() => navigate(`/profile/${username}`))
+                                    .then(() => dispatch(getUserData({ username, token })))
+                                    .then(() => {
+                                        navigate(`/profile/${username}`)
+                                        dispatch(initializeUser({ username, token }))
+                                    })
                                     .catch(error => alert("failed to update user data, ", error))
                                 :
                                 alert("name should not be empty")
 
                         }}
                         className={`submit-button ${styles.editProfile__Btn}`}>UPDATE
+                    </button>
+                    <button
+                        onClick={() => navigate(`/profile/${username}`)}
+                        className={`submit-button ${styles.editProfile__Btn}`}
+                        style={{ marginLeft: "0.4rem"}}
+                    >CANCEL
                     </button>
                 </div>
             </div>
