@@ -41,8 +41,9 @@
   /* text-decoration: underline; */
   margin-top: 2.5rem;
   cursor: pointer;
-  color: rgb(159, 158, 156);
-  font-size: 0.8rem;
+  /* color: rgb(159, 158, 156); */
+  color: rgb(92, 91, 91);
+  font-size: 1rem;
 }
 
 .loginInputText {
