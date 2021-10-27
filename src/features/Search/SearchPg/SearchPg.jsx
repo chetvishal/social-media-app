@@ -8,7 +8,7 @@ import { debounce } from '../../../Services/Debounce';
 export const SearchPg = () => {
 
     const [searchQuery, setSearchQuery] = useState("")
-    const { searchResult } = useSelector(state => state.search)
+    const { searchResult, status } = useSelector(state => state.search)
     const { userToken: token } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
@@ -47,7 +47,7 @@ export const SearchPg = () => {
                 {
                     searchResult.length !== 0 ? searchResult.map(item => {
                         return <FollowerCard name={item.name} username={item.username} avatarUrl={item?.avatarUrl}/>
-                    }) : <h3>No user found</h3>
+                    }) : status !== "loading" &&  <h3>No user found</h3>
                 }
             </div>
         </div>
