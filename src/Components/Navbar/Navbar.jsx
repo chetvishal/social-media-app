@@ -4,6 +4,7 @@ import { Hamburger, } from '../../Assets/Svg/index';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../features/Auth/authSlice';
+import { useNavigate } from 'react-router';
 
 export const Navbar = ({ hideMenu, setHideMenu }) => {
 
@@ -11,6 +12,7 @@ export const Navbar = ({ hideMenu, setHideMenu }) => {
 
     const check = useRef(null);
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const handleCheck = () => check.current.checked = false;
 
@@ -37,7 +39,7 @@ export const Navbar = ({ hideMenu, setHideMenu }) => {
                     </div>
                     <div className={styles.navbar__logo}
                     >
-                        <span className={styles.navbar__logoText}>Social.Street</span>
+                        <span className={styles.navbar__logoText} onClick={() => navigate('/')}>Social.Street</span>
                     </div>
                 </label>
                 <ul className={styles.navbar__menu}>
