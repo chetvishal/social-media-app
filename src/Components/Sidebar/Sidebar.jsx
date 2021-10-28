@@ -1,6 +1,6 @@
 import styles from './Sidebar.module.css';
 import { Home2 as HomeIcon, Bell, User, MagnifyingGlass, Logout, FeatherPen, Cross } from '../../Assets/Svg/index';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../features/Auth/authSlice';
 import { NewPost } from '../index';
@@ -24,6 +24,8 @@ const CreatePost = ({ visibility, toggleVisibility }) => {
     )
 }
 
+
+
 export const Sidebar = () => {
 
     const { username } = useSelector(state => state.auth)
@@ -32,29 +34,38 @@ export const Sidebar = () => {
     const toggleVisibility = () => {
         setNewPostVisibility(newPostVisibility => !newPostVisibility)
     }
+    const lastUrlChar = window.location.href.charAt(window.location.href.length - 1)
 
+    const checkActive = (match, location) => {
+        //some additional logic to verify you are in the home URI
+        if (!location) return false;
+        const { pathname } = location;
+        console.log(pathname);
+        return pathname === "/";
+    }
+    const activeLinkStyle = { textShadow: "1px 0 0 black" }
     return (
         <div className={styles.home__sidebar}>
             <div
                 className={styles.home__sidebarContainer}
             >
-                <Link className="nostyle" to="/">
+                <NavLink className="nostyle" to="/" isActive={checkActive} style={{ textShadow: lastUrlChar === "/" ? "1px 0 0 black" : "" }}>
                     <div className={styles.home__sidebarItem}>
                         <HomeIcon
                             className={styles.home__sidebarIcon}
                         />
                         <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Home</span>
                     </div>
-                </Link>
-                <Link className="nostyle" to="/search">
+                </NavLink>
+                <NavLink className="nostyle" exact to="/search" activeStyle={activeLinkStyle}>
                     <div className={styles.home__sidebarItem}>
                         <MagnifyingGlass
                             className={styles.home__sidebarIcon}
                         />
                         <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Search</span>
                     </div>
-                </Link>
-                <Link className="nostyle" to="/notifications">
+                </NavLink>
+                <NavLink className="nostyle" exact to="/notifications" activeStyle={activeLinkStyle}>
                     <div className={styles.home__sidebarItem}>
                         <Bell
                             className={styles.home__sidebarIcon}
@@ -62,15 +73,15 @@ export const Sidebar = () => {
                         <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Notifications</span>
 
                     </div>
-                </Link>
-                <Link className="nostyle" to={`/profile/${username}`}>
+                </NavLink>
+                <NavLink className="nostyle" exact to={`/profile/${username}`} activeStyle={activeLinkStyle}>
                     <div className={styles.home__sidebarItem}>
                         <User
                             className={styles.home__sidebarIcon}
                         />
                         <span className={`util-heading-medium ${styles.home__sidebarItemText}`}>Profile</span>
                     </div>
-                </Link>
+                </NavLink>
                 {/* <Link className="nostyle" to={`/`}> */}
                 <div className={styles.home__sidebarItem} onClick={toggleVisibility}>
                     <FeatherPen
