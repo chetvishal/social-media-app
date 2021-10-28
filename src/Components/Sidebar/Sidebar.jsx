@@ -36,20 +36,13 @@ export const Sidebar = () => {
     }
     const lastUrlChar = window.location.href.charAt(window.location.href.length - 1)
 
-    const checkActive = (match, location) => {
-        //some additional logic to verify you are in the home URI
-        if (!location) return false;
-        const { pathname } = location;
-        console.log(pathname);
-        return pathname === "/";
-    }
     const activeLinkStyle = { textShadow: "1px 0 0 black" }
     return (
         <div className={styles.home__sidebar}>
             <div
                 className={styles.home__sidebarContainer}
             >
-                <NavLink className="nostyle" to="/" isActive={checkActive} style={{ textShadow: lastUrlChar === "/" ? "1px 0 0 black" : "" }}>
+                <NavLink className="nostyle" to="/" style={{ textShadow: lastUrlChar === "/" ? "1px 0 0 black" : "" }}>
                     <div className={styles.home__sidebarItem}>
                         <HomeIcon
                             className={styles.home__sidebarIcon}
