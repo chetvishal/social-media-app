@@ -10,7 +10,8 @@ export const Login = () => {
     const dispatch = useDispatch();
     const {
         isLoggedIn,
-        error
+        error,
+        status
     } = useSelector((state) => state.auth);
     const navigate = useNavigate()
     const [username, setUsername] = useState("");
@@ -80,7 +81,7 @@ export const Login = () => {
                         // onClick={handleLogin}
                         type="submit"
                     >
-                        LOGIN
+                        {status !== "loading" ? "LOGIN" : "LOADING..."}
                     </button>
                 </form>
 
